@@ -1,8 +1,9 @@
+from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import yaml
-from pydantic import BaseModel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator, model_validator
 
 
 class ProfileLinks(BaseModel):
@@ -71,6 +72,33 @@ class Profile(BaseModel):
         return value_cleaned
 
 
+class BlogPost(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    slug: str
+    title: str
+    status: Literal["published", "draft"]
+    summary: str | None = None
+    published_date: date | None = None
+    body: str
+
+    @field_validator("status")
+    @classmethod
+    def status_must_be_valid(cls, value: str) -> str:
+        if value not in {"published", "draft"}:
+            raise ValueError(f"Blog post status must be 'published' or 'draft', but got '{value}'")
+        return value
+
+    @model_validator(mode="after")
+    def published_posts_must_have_required_fields(self) -> BlogPost:
+        if self.status == "published":
+            if self.summary is None:
+                raise ValueError("Published blog posts must have a summary")
+            if self.published_date is None:
+                raise ValueError("Published blog posts must have a published_date")
+        return self
+
+
 def load_profile(root_path: Path) -> Profile:
     yaml_file_path: Path = root_path / "content" / "profile.yaml"
     raw_profile: dict[str, Any]
@@ -89,6 +117,39 @@ def load_profile(root_path: Path) -> Profile:
     profile: Profile = Profile.model_validate(raw_profile)
     _validate_avatar_exists(root_path, profile.avatar)
     return profile
+
+
+def load_blog_posts(root_path: Path) -> list[BlogPost]:
+    blog_dir: Path = root_path / "content" / "blog"
+    if not blog_dir.exists():
+        return []
+
+    posts: list[BlogPost] = []
+    for blog_file_path in sorted(blog_dir.glob("*.md")):
+        raw_text = blog_file_path.read_text(encoding="utf-8")
+        frontmatter, body = _split_markdown_frontmatter(raw_text, blog_file_path)
+        post = BlogPost.model_validate(
+            {**frontmatter, "slug": blog_file_path.stem, "body": body.strip()}
+        )
+        if post.status == "published":
+            posts.append(post)
+
+    return posts
+
+
+def _split_markdown_frontmatter(raw_text: str, file_path: Path) -> tuple[dict[str, Any], str]:
+    if not raw_text.startswith("---"):
+        raise ValueError(f"Blog post is missing YAML frontmatter: {file_path}")
+
+    parts: list = raw_text.split("---", maxsplit=2)
+    if len(parts) != 3:
+        raise ValueError(f"Blog post has invalid YAML frontmatter: {file_path}")
+
+    raw_frontmatter: dict = yaml.safe_load(parts[1])
+    if not isinstance(raw_frontmatter, dict):
+        raise ValueError(f"Blog post frontmatter must be a mapping/object: {file_path}")
+
+    return raw_frontmatter, parts[2]
 
 
 def _validate_avatar_exists(root_path: Path, avatar_path: str) -> None:
