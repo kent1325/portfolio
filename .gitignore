@@ -54,3 +54,4 @@ yarn-error.log*
 
 # Project-specific ignored assets
 assets/external/
+.temp/
