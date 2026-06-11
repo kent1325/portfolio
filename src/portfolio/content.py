@@ -1,9 +1,12 @@
 from datetime import date
 from pathlib import Path
+from re import compile
 from typing import Any, Literal
 
 import yaml
 from pydantic import BaseModel, ConfigDict, field_validator, model_validator
+
+SLUG_PATTERN = compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 
 
 class ProfileLinks(BaseModel):
@@ -97,6 +100,13 @@ class BlogPost(BaseModel):
             if self.published_date is None:
                 raise ValueError("Published blog posts must have a published_date")
         return self
+
+    @field_validator("slug")
+    @classmethod
+    def slug_must_be_lowercase_kebab_case(cls, value: str) -> str:
+        if not SLUG_PATTERN.fullmatch(value):
+            raise ValueError(f"Blog post slug must be lowercase kebab-case, but got '{value}'")
+        return value
 
 
 def load_profile(root_path: Path) -> Profile:

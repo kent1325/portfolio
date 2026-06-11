@@ -2,7 +2,9 @@ from datetime import date
 from pathlib import Path
 from textwrap import dedent
 
-from portfolio.content import load_blog_posts
+from pytest import raises
+
+from portfolio.content import BlogPost, load_blog_posts
 
 
 def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
@@ -43,7 +45,7 @@ def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
         encoding="utf-8",
     )
 
-    posts = load_blog_posts(tmp_path)
+    posts: list[BlogPost] = load_blog_posts(tmp_path)
 
     assert len(posts) == 1
 
@@ -54,3 +56,29 @@ def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
     assert post.summary == "First post."
     assert post.published_date == date(2026, 6, 10)
     assert post.body.strip() == "# Hello World\n\nPublished body."
+
+
+def test_load_blog_bad_naming_convention(tmp_path: Path) -> None:
+    blog_dir: Path = tmp_path / "content" / "blog"
+    blog_dir.mkdir(parents=True)
+
+    (blog_dir / "Bad_Name.md").write_text(
+        dedent(
+            """\
+            ---
+            title: Bad Name
+            status: published
+            summary: First bad post.
+            published_date: 2026-06-10
+            ---
+
+            # Bad Name
+
+            Published body.
+            """,
+        ),
+        encoding="utf-8",
+    )
+
+    with raises(ValueError):
+        load_blog_posts(tmp_path)

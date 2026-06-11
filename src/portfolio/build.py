@@ -3,7 +3,7 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from .content import load_profile
+from .content import BlogPost, load_blog_posts, load_profile
 
 
 def _get_project_root() -> Path:
@@ -62,9 +62,10 @@ def build_site() -> None:
     )
     index_template = environment.get_template("index.html")
     blog_index_template = environment.get_template("blog_index.html")
+    blog_posts: list[BlogPost] = load_blog_posts(ROOT_PATH)
 
     index_html = index_template.render(profile=profile)
-    blog_index_html = blog_index_template.render()
+    blog_index_html = blog_index_template.render(posts=blog_posts)
 
     _drop_dist_dir()
 

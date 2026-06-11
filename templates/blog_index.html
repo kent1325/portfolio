@@ -11,8 +11,21 @@
     <main>
         <h1>Blog</h1>
 
+        {% if posts is defined and posts|length > 0 %}
+        <div>
+            <ul>
+                {% for post in posts %}
+                <li>
+                    <h2>{{ post.title }}</h2>
+                    <em>{{ post.published_date }}</em>
+                    <p>{{ post.summary }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
         <p>No posts published yet.</p>
-
+        {% endif %}
         <p>
             <a href="/">Back home</a>
         </p>
