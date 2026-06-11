@@ -1,7 +1,11 @@
 name: Check
-on: 
+on:
   push:
   pull_request:
+
+env:
+  UV_EXCLUDE_NEWER: "14 days"
+
 jobs:
   check:
     runs-on: ubuntu-latest
