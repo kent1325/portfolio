@@ -17,6 +17,8 @@ build:
 smoke:
     test -f dist/index.html
     test -f dist/blog/index.html
+    test -f dist/blog/lp-vs-ilp/index.html
+    test -f dist/blog/data-science-in-esports/index.html
     test -f dist/assets/styles.css
 
 check: format-check lint test build smoke

@@ -17,7 +17,10 @@
                 {% for post in posts %}
                 <li>
                     <h2><a href="/blog/{{ post.slug }}/">{{ post.title }}</a></h2>
-                    <em>{{ post.published_date }}</em>
+                    <em>Published: {{ post.published_date }}</em>
+                    {% if post.updated_date %}
+                    <em>Updated: {{ post.updated_date }}</em>
+                    {% endif %}
                     <p>{{ post.summary }}</p>
                 </li>
                 {% endfor %}

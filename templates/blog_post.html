@@ -10,7 +10,10 @@
 <body>
     <main>
         <h1>{{ post.title }}</h1>
-        <em>{{ post.published_date }}</em>
+        <em>Published: {{ post.published_date }}</em>
+        {% if post.updated_date %}
+        <em>Updated: {{ post.updated_date }}</em>
+        {% endif %}
         <p>{{ post.summary }}</p>
         {{ body_html | safe }}
         <p><a href="/blog/">Back to blog</a></p>

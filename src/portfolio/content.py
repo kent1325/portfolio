@@ -83,6 +83,7 @@ class BlogPost(BaseModel):
     status: Literal["published", "draft"]
     summary: str | None = None
     published_date: date | None = None
+    updated_date: date | None = None
     body: str
 
     @field_validator("status")
@@ -107,6 +108,13 @@ class BlogPost(BaseModel):
         if not SLUG_PATTERN.fullmatch(value):
             raise ValueError(f"Blog post slug must be lowercase kebab-case, but got '{value}'")
         return value
+
+    @model_validator(mode="after")
+    def updated_date_must_be_at_or_later_than_published_date(self) -> BlogPost:
+        if self.published_date is not None and self.updated_date is not None:
+            if self.updated_date < self.published_date:
+                raise ValueError("Updated date cannot be earlier than the published date")
+        return self
 
 
 def load_profile(root_path: Path) -> Profile:

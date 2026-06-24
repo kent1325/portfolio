@@ -19,6 +19,7 @@ def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
             status: published
             summary: First post.
             published_date: 2026-06-10
+            updated_date: 2026-06-11
             ---
 
             # Hello World
@@ -55,6 +56,7 @@ def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
     assert post.status == "published"
     assert post.summary == "First post."
     assert post.published_date == date(2026, 6, 10)
+    assert post.updated_date == date(2026, 6, 11)
     assert post.body.strip() == "# Hello World\n\nPublished body."
 
 
@@ -73,6 +75,33 @@ def test_load_blog_bad_naming_convention(tmp_path: Path) -> None:
             ---
 
             # Bad Name
+
+            Published body.
+            """,
+        ),
+        encoding="utf-8",
+    )
+
+    with raises(ValueError):
+        load_blog_posts(tmp_path)
+
+
+def test_load_blog_incorrect_updated_date(tmp_path: Path) -> None:
+    blog_dir: Path = tmp_path / "content" / "blog"
+    blog_dir.mkdir(parents=True)
+
+    (blog_dir / "hello-world.md").write_text(
+        dedent(
+            """\
+            ---
+            title: Hello World
+            status: published
+            summary: First post.
+            published_date: 2026-06-10
+            updated_date: 2026-06-09
+            ---
+
+            # Hello World
 
             Published body.
             """,
