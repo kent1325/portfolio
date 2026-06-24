@@ -4,6 +4,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 from .content import BlogPost, load_blog_posts, load_profile
+from .markdown import render_markdown
 
 
 def _get_project_root() -> Path:
@@ -74,7 +75,9 @@ def build_site() -> None:
     index_html_out_path = ROOT_PATH / "dist" / "index.html"
     blog_index_html_out_path = ROOT_PATH / "dist" / "blog" / "index.html"
     for blog_post in blog_posts:
-        blog_post_html = blog_post_template.render(post=blog_post)
+        blog_post_html = blog_post_template.render(
+            post=blog_post, body_html=render_markdown(blog_post.body)
+        )
         blog_post_html_out_path = ROOT_PATH / "dist" / "blog" / blog_post.slug / "index.html"
         blog_post_html_out_path.parent.mkdir(parents=True, exist_ok=True)
         blog_post_html_out_path.write_text(blog_post_html, encoding="utf-8")

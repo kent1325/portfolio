@@ -20,3 +20,6 @@ smoke:
     test -f dist/assets/styles.css
 
 check: format-check lint test build smoke
+
+serve:
+    uv run python -m http.server 8000 -d dist

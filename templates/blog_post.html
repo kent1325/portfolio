@@ -12,7 +12,7 @@
         <h1>{{ post.title }}</h1>
         <em>{{ post.published_date }}</em>
         <p>{{ post.summary }}</p>
-        <p>{{ post.body }}</p>
+        {{ body_html | safe }}
         <p><a href="/blog/">Back to blog</a></p>
     </main>
 </body>
