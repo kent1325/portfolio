@@ -48,7 +48,6 @@ def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
     )
 
     posts: list[BlogPost] = load_blog_posts(tmp_path)
-
     assert len(posts) == 1
 
     post = posts[0]
@@ -141,3 +140,53 @@ def test_load_blog_bad_tag_naming(tmp_path: Path) -> None:
 
     with raises(ValueError, match="tags"):
         load_blog_posts(tmp_path)
+
+
+def test_load_blog_posts_sorts_published_posts_newest_first(tmp_path: Path) -> None:
+    blog_dir: Path = tmp_path / "content" / "blog"
+    blog_dir.mkdir(parents=True)
+
+    (blog_dir / "hello-world.md").write_text(
+        dedent(
+            """\
+            ---
+            title: Hello World
+            status: published
+            summary: First post.
+            published_date: 2026-06-10
+            updated_date: 2026-06-11
+            tags: [machine-learning, data-science]
+            ---
+
+            # Hello World
+
+            Published body.
+            """,
+        ),
+        encoding="utf-8",
+    )
+
+    (blog_dir / "hello-world-2.md").write_text(
+        dedent(
+            """\
+            ---
+            title: Hello World 2
+            status: published
+            summary: Second post.
+            published_date: 2026-06-11
+            updated_date: 2026-06-12
+            tags: [machine-learning, data-science]
+            ---
+
+            # Hello World
+
+            Published body.
+            """,
+        ),
+        encoding="utf-8",
+    )
+
+    posts: list[BlogPost] = load_blog_posts(tmp_path)
+
+    assert len(posts) == 2
+    assert [post.slug for post in posts] == ["hello-world-2", "hello-world"]

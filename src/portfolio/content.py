@@ -1,4 +1,5 @@
 from datetime import date
+from operator import attrgetter
 from pathlib import Path
 from re import compile
 from typing import Any, Literal
@@ -160,7 +161,7 @@ def load_blog_posts(root_path: Path) -> list[BlogPost]:
         )
         if post.status == "published":
             posts.append(post)
-
+    posts.sort(key=attrgetter("published_date"), reverse=True)
     return posts
 
 
