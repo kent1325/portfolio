@@ -4,6 +4,7 @@ status: published
 summary: Data in gaming.
 published_date: 2026-06-10
 updated_date: 2026-06-11
+tags: [data-science, machine-learning, esports]
 ---
 
 Esports teams use data science to turn gameplay into strategy. Match logs, player movements, economy choices, draft patterns, and reaction times can reveal what wins games.

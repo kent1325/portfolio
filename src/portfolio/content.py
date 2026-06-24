@@ -84,6 +84,7 @@ class BlogPost(BaseModel):
     summary: str | None = None
     published_date: date | None = None
     updated_date: date | None = None
+    tags: list[str] | None = None
     body: str
 
     @field_validator("status")
@@ -109,11 +110,19 @@ class BlogPost(BaseModel):
             raise ValueError(f"Blog post slug must be lowercase kebab-case, but got '{value}'")
         return value
 
+    @field_validator("tags")
+    @classmethod
+    def tag_must_be_lowercase_kebab_case(cls, value: list[str]) -> list[str]:
+        for tag in value:
+            if not SLUG_PATTERN.fullmatch(tag):
+                raise ValueError(f"Blog post tags must be lowercase kebab-case, but got '{tag}'")
+        return value
+
     @model_validator(mode="after")
     def updated_date_must_be_at_or_later_than_published_date(self) -> BlogPost:
         if self.published_date is not None and self.updated_date is not None:
             if self.updated_date < self.published_date:
-                raise ValueError("Updated date cannot be earlier than the published date")
+                raise ValueError("updated_date cannot be earlier than published_date")
         return self
 
 

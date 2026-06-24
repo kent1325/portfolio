@@ -20,6 +20,7 @@ def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
             summary: First post.
             published_date: 2026-06-10
             updated_date: 2026-06-11
+            tags: [machine-learning, data-science]
             ---
 
             # Hello World
@@ -57,6 +58,7 @@ def test_load_blog_posts_returns_only_published_posts(tmp_path: Path) -> None:
     assert post.summary == "First post."
     assert post.published_date == date(2026, 6, 10)
     assert post.updated_date == date(2026, 6, 11)
+    assert post.tags == ["machine-learning", "data-science"]
     assert post.body.strip() == "# Hello World\n\nPublished body."
 
 
@@ -109,5 +111,33 @@ def test_load_blog_incorrect_updated_date(tmp_path: Path) -> None:
         encoding="utf-8",
     )
 
-    with raises(ValueError):
+    with raises(ValueError, match="updated_date"):
+        load_blog_posts(tmp_path)
+
+
+def test_load_blog_bad_tag_naming(tmp_path: Path) -> None:
+    blog_dir: Path = tmp_path / "content" / "blog"
+    blog_dir.mkdir(parents=True)
+
+    (blog_dir / "hello-world.md").write_text(
+        dedent(
+            """\
+            ---
+            title: Hello World
+            status: published
+            summary: First post.
+            published_date: 2026-06-10
+            updated_date: 2026-06-11
+            tags: [Machine Learning]
+            ---
+
+            # Hello World
+
+            Published body.
+            """,
+        ),
+        encoding="utf-8",
+    )
+
+    with raises(ValueError, match="tags"):
         load_blog_posts(tmp_path)

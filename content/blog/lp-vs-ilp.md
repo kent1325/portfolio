@@ -3,6 +3,8 @@ title: Linear Programming vs. Integer Linear Programming
 status: published
 summary: Mathematical Optimization.
 published_date: 2026-06-10
+updated_date: 2026-06-10
+tags: [linear-programming, python]
 ---
 
 Linear Programming (LP) optimizes a linear objective under linear constraints. Think: maximize profit or minimize cost while respecting limits on labor, budget, or materials.
