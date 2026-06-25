@@ -66,8 +66,9 @@ def build_site() -> None:
     blog_post_template = environment.get_template("blog_post.html")
 
     blog_posts: list[BlogPost] = load_blog_posts(ROOT_PATH)
+    latest_posts: list[BlogPost] = blog_posts[:5]
 
-    index_html = index_template.render(profile=profile)
+    index_html = index_template.render(profile=profile, latest_posts=latest_posts)
     blog_index_html = blog_index_template.render(posts=blog_posts)
 
     _drop_dist_dir()

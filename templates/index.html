@@ -27,6 +27,19 @@
                 <a href="/blog/">Read the blog</a>
             </p>
         </section>
+        {% if latest_posts is defined and latest_posts|length > 0 %}
+            <section>
+                <h2>Latest posts</h2>
+                {% for post in latest_posts %}
+                    <p><a href="/blog/{{ post.slug }}/">{{ post.title }}</a></p>
+                    <em>Published: {{ post.published_date }}</em>
+                    {% if post.updated_date %}
+                        <em>Updated: {{ post.updated_date }}</em>
+                    {% endif %}
+                    <p>{{ post.summary }}</p>
+                {% endfor %}
+            </section>
+        {% endif %}
     </main>    
 </body>
 </html>
