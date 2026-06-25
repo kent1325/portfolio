@@ -27,19 +27,30 @@
                 <a href="/blog/">Read the blog</a>
             </p>
         </section>
+        <section aria-label="Technologies">
+            <ul>
+                {% for technology in technologies %}
+                <li>{{ technology.label }}</li>
+                {% endfor %}
+            </ul>
+        </section>
         {% if latest_posts is defined and latest_posts|length > 0 %}
-            <section>
-                <h2>Latest posts</h2>
+        <section>
+            <h2>Latest posts</h2>
+            <ul>
                 {% for post in latest_posts %}
+                <li>
                     <p><a href="/blog/{{ post.slug }}/">{{ post.title }}</a></p>
                     <em>Published: {{ post.published_date }}</em>
                     {% if post.updated_date %}
-                        <em>Updated: {{ post.updated_date }}</em>
+                    <em>Updated: {{ post.updated_date }}</em>
                     {% endif %}
                     <p>{{ post.summary }}</p>
+                </li>
                 {% endfor %}
-            </section>
+            </ul>
+        </section>
         {% endif %}
-    </main>    
+    </main>
 </body>
 </html>

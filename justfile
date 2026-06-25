@@ -17,6 +17,12 @@ build:
 smoke:
     test -f dist/index.html
     test -f dist/blog/index.html
+    grep -q "Python" dist/index.html
+    grep -q "FastAPI" dist/index.html
+    grep -q "Docker" dist/index.html
+    grep -q "Latest posts" dist/index.html
+    grep -q "/blog/data-science-in-esports/" dist/index.html
+    grep -q "/blog/lp-vs-ilp/" dist/index.html
     test -f dist/blog/lp-vs-ilp/index.html
     test -f dist/blog/data-science-in-esports/index.html
     test -f dist/assets/styles.css

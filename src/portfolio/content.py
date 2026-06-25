@@ -127,6 +127,29 @@ class BlogPost(BaseModel):
         return self
 
 
+class Technology(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    tag: str
+    label: str
+
+    @field_validator("label")
+    @classmethod
+    def label_must_be_defined(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("label must be set")
+        return value
+
+    @field_validator("tag")
+    @classmethod
+    def tag_must_be_valid_lowercase_kebab_case(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("tag must be set")
+        if not SLUG_PATTERN.fullmatch(value):
+            raise ValueError(f"tag must be lowercase kebab-case, but got '{value}'")
+        return value
+
+
 def load_profile(root_path: Path) -> Profile:
     yaml_file_path: Path = root_path / "content" / "profile.yaml"
     raw_profile: dict[str, Any]
@@ -186,3 +209,35 @@ def _validate_avatar_exists(root_path: Path, avatar_path: str) -> None:
         raise FileNotFoundError(
             f"Avatar file not found: {path} from profile avatar path: {avatar_path}"
         )
+
+
+def load_technologies(root_path: Path) -> list[Technology]:
+    yaml_file_path: Path = root_path / "content" / "technologies.yaml"
+    raw_technologies: dict[str, list[dict[str, str]]]
+    if not yaml_file_path.is_file():
+        raise FileNotFoundError(f"YAML file not found: {yaml_file_path}")
+
+    with yaml_file_path.open("r", encoding="utf-8") as f:
+        raw_technologies = yaml.safe_load(f)
+
+    if raw_technologies is None:
+        raise ValueError(f"YAML file is empty: {yaml_file_path}")
+
+    if not isinstance(raw_technologies, dict):
+        raise ValueError(f"YAML root must be a mapping/object: {yaml_file_path}")
+
+    technologies: list[Technology] = []
+    if "technologies" not in raw_technologies:
+        raise ValueError(
+            f"YAML file does not contain keyword 'technologies'. Review: {yaml_file_path}"
+        )
+    raw_items: list[dict[str, str]] = raw_technologies.get("technologies")
+    if not isinstance(raw_items, list):
+        raise ValueError(f"Expected type list, but got {type(raw_items)}")
+    if not raw_items:
+        raise ValueError(
+            f"at least one technology needs to be defined, but got none in: {yaml_file_path}"
+        )
+    for raw_technology in raw_items:
+        technologies.append(Technology.model_validate(raw_technology))
+    return technologies

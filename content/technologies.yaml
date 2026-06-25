@@ -1,0 +1,7 @@
+technologies:
+  - tag: python
+    label: Python
+  - tag: fastapi
+    label: FastAPI
+  - tag: docker
+    label: Docker
