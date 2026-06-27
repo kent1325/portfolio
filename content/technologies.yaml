@@ -1,7 +1,42 @@
 technologies:
   - tag: python
     label: Python
+    icon: /assets/icons/python.svg
   - tag: fastapi
     label: FastAPI
+    icon: /assets/icons/fastapi.svg
   - tag: docker
     label: Docker
+    icon: /assets/icons/docker.svg
+  - tag: pandas
+    label: Pandas
+    icon: /assets/icons/pandas.svg
+  - tag: azure
+    label: Microsoft Azure
+    icon: /assets/icons/azure.svg
+  - tag: postgresql
+    label: PostgreSQL
+    icon: /assets/icons/postgresql.svg
+  - tag: git
+    label: Git
+    icon: /assets/icons/git.svg
+  - tag: pydantic
+    label: Pydantic
+    icon: /assets/icons/pydantic.svg
+  - tag: claude-code
+    label: Claude code
+    icon: /assets/icons/claudecode.svg
+  - tag: hugging-face
+    label: Hugging Face
+    icon: /assets/icons/huggingface.svg
+  - tag: pytorch
+    label: Pytorch
+    icon: /assets/icons/pytorch.svg
+  - tag: scikit-learn
+    icon: /assets/icons/scikitlearn.svg
+  - tag: scipy
+    label: SciPy
+    icon: /assets/icons/scipy.svg
+  - tag: uv
+    label: uv
+    icon: /assets/icons/uv.svg

@@ -27,12 +27,33 @@
                 <a href="/blog/">Read the blog</a>
             </p>
         </section>
-        <section aria-label="Technologies">
-            <ul>
-                {% for technology in technologies %}
-                <li>{{ technology.label }}</li>
-                {% endfor %}
-            </ul>
+        <section aria-label="Technologies" class="technology-marquee">
+            <div class="technology-marquee__track">
+                <ul class="technology-marquee__list">
+                    {% for technology in technologies %}
+                    <li class="technology-marquee__item">
+                        {% if technology.icon %}
+                        <img src="{{ technology.icon }}" alt="{{ technology.tag if not technology.label else '' }}" class="technology-marquee__icon">
+                        {% endif %}
+                        {% if technology.label %}
+                        <span>{{ technology.label }}</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                <ul aria-hidden="true" class="technology-marquee__list">
+                    {% for technology in technologies %}
+                    <li class="technology-marquee__item">
+                        {% if technology.icon %}
+                        <img src="{{ technology.icon }}" alt="" class="technology-marquee__icon">
+                        {% endif %}
+                        {% if technology.label %}
+                        <span>{{ technology.label }}</span>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </section>
         {% if latest_posts is defined and latest_posts|length > 0 %}
         <section>

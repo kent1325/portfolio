@@ -17,15 +17,19 @@ build:
 smoke:
     test -f dist/index.html
     test -f dist/blog/index.html
-    grep -q "Python" dist/index.html
-    grep -q "FastAPI" dist/index.html
-    grep -q "Docker" dist/index.html
+    grep -q "/assets/icons/python.svg" dist/index.html
+    grep -q "/assets/icons/fastapi.svg" dist/index.html
+    grep -q "/assets/icons/docker.svg" dist/index.html
     grep -q "Latest posts" dist/index.html
     grep -q "/blog/data-science-in-esports/" dist/index.html
     grep -q "/blog/lp-vs-ilp/" dist/index.html
     test -f dist/blog/lp-vs-ilp/index.html
     test -f dist/blog/data-science-in-esports/index.html
     test -f dist/assets/styles.css
+    grep -q "technology-marquee-scroll" dist/assets/styles.css
+    test -f dist/assets/icons/python.svg
+    test -f dist/assets/icons/fastapi.svg
+    test -f dist/assets/icons/docker.svg
 
 check: format-check lint test build smoke
 

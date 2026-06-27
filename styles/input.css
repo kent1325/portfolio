@@ -1,1 +1,57 @@
 @import "tailwindcss";
+
+.technology-marquee {
+    overflow: hidden;
+    padding-block: 1.5rem;
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 12%,
+        black 88%,
+        transparent
+    );
+}
+
+.technology-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: technology-marquee-scroll 30s linear infinite;
+}
+
+.technology-marquee__list {
+    display: flex;
+    gap: 4rem;
+    margin: 0;
+    padding: 0;
+    padding-inline-end: 4rem;
+    list-style: none;
+}
+
+.technology-marquee__item {
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    color: rgb(71, 85, 105);
+    font-size: 1.125rem;
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: 0.02em;
+    gap: 0.75rem;
+}
+
+.technology-marquee__icon {
+    width: 1.75rem;
+    height: 1.75rem;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.8;
+}
+
+@keyframes technology-marquee-scroll {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}

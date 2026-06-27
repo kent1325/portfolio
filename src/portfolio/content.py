@@ -131,13 +131,17 @@ class Technology(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
     tag: str
-    label: str
+    label: str | None = None
+    icon: str | None = None
 
     @field_validator("label")
     @classmethod
-    def label_must_be_defined(cls, value: str) -> str:
-        if not value.strip():
-            raise ValueError("label must be set")
+    def label_must_be_valid(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
+        value = value.strip()
+        if not value:
+            raise ValueError("label must not be empty when set")
         return value
 
     @field_validator("tag")
@@ -148,6 +152,26 @@ class Technology(BaseModel):
         if not SLUG_PATTERN.fullmatch(value):
             raise ValueError(f"tag must be lowercase kebab-case, but got '{value}'")
         return value
+
+    @field_validator("icon")
+    @classmethod
+    def icon_must_be_valid_local_svg_asset(cls, value: str | None) -> str | None:
+        if value is None:
+            return value
+        value = value.strip()
+        if not value.startswith("/assets/"):
+            raise ValueError(f"icon must start with /assets/, but got '{value}'")
+        if ".." in value:
+            raise ValueError("icon must not contain '..'")
+        if not value.endswith(".svg"):
+            raise ValueError(f"icon must be an SVG, but got '{value}'")
+        return value
+
+    @model_validator(mode="after")
+    def technology_must_have_label_or_icon(self) -> Technology:
+        if self.label is None and self.icon is None:
+            raise ValueError("Technology must have a label or icon")
+        return self
 
 
 def load_profile(root_path: Path) -> Profile:
@@ -239,5 +263,16 @@ def load_technologies(root_path: Path) -> list[Technology]:
             f"at least one technology needs to be defined, but got none in: {yaml_file_path}"
         )
     for raw_technology in raw_items:
-        technologies.append(Technology.model_validate(raw_technology))
+        technology = Technology.model_validate(raw_technology)
+        _validate_technology_icon_exists(root_path, technology)
+        technologies.append(technology)
     return technologies
+
+
+def _validate_technology_icon_exists(root_path: Path, technology: Technology) -> None:
+    if technology.icon is None:
+        return
+
+    path: Path = root_path / technology.icon.removeprefix("/")
+    if not path.is_file():
+        raise FileNotFoundError(f"icon file not found for '{technology.tag}':{path}")
