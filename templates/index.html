@@ -9,22 +9,18 @@
 
 <body>
     <main>
-        <section>
-            <img src="{{ profile.avatar }}" alt="avatar">
-            <h1>{{ profile.name }}</h1>
-            <p>{{ profile.hero_lines[0] }}</p>
-            <ul>
+        <section class="hero">
+            <img src="{{ profile.avatar }}" alt="avatar" class="hero__avatar">
+            <h1 class="hero__name">{{ profile.name }}</h1>
+            <ul class="hero__lines">
                 {% for line in profile.hero_lines %}
-                <li>{{ line }}</li>
+                <li class="hero__line">{{ line }}</li>
                 {% endfor %}
             </ul>
 
-            <p>
+            <p class="hero__links">
                 <a href="{{ profile.links.linkedin }}">LinkedIn</a>
                 <a href="{{ profile.links.github }}">GitHub</a>
-            </p>
-            <p>
-                <a href="/blog/">Read the blog</a>
             </p>
         </section>
         <section aria-label="Technologies" class="technology-marquee">
@@ -70,6 +66,9 @@
                 </li>
                 {% endfor %}
             </ul>
+            <p>
+                <a href="/blog/">Read all blogs</a>
+            </p>
         </section>
         {% endif %}
     </main>
