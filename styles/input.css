@@ -56,14 +56,54 @@ main {
 }
 
 .hero__lines {
-    display: grid;
-    gap: 0.35rem;
     margin: 0;
     padding: 0;
-    color: rgb(71, 85, 105);
-    font-size: clamp(1.125rem, 2vw, 1.5rem);
-    line-height: 1.4;
+    min-height: 3rem;
+    color: transparent;
+    background: linear-gradient(
+        90deg,
+        rgb(120, 53, 15),
+        rgb(217, 119, 6),
+        rgb(245, 158, 11)
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-size: clamp(1.75rem, 4vw, 3rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.04em;
     list-style: none;
+}
+
+.hero__line {
+    display: none;
+}
+
+.hero__line:first-child {
+    display: block;
+}
+
+.hero__line:first-child::after {
+    content: "";
+    display: inline-block;
+    width: 0.08em;
+    height: 0.9em;
+    margin-left: 0.12em;
+    background: rgb(217, 119, 6);
+    vertical-align: -0.08em;
+    animation: hero-cursor-blink 1s steps(2, end) infinite;
+}
+
+@keyframes hero-cursor-blink {
+    50% {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hero__line:first-child::after {
+        animation: none;
+    }
 }
 
 .hero__links {

@@ -30,6 +30,8 @@ smoke:
     test -f dist/assets/icons/python.svg
     test -f dist/assets/icons/fastapi.svg
     test -f dist/assets/icons/docker.svg
+    grep -q "/assets/scripts/hero-lines.js" dist/index.html
+    test -f dist/assets/scripts/hero-lines.js
 
 check: format-check lint test build smoke
 

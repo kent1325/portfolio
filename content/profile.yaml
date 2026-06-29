@@ -1,10 +1,10 @@
 name: "Kent Vugs Nielsen"
 avatar: "/assets/images/profile-picture.jpg"
 hero_lines: 
-  - "I do Data Science"
-  - "I do ML & AI Engineering"
-  - "I do Data Analytics"
-  - "I do MLOps"
+  - "I Do Data Science"
+  - "I Do ML & AI Engineering"
+  - "I Do Data Analytics"
+  - "I Do MLOps"
 links:
   github: "https://github.com/kvugs"
   linkedin: "https://www.linkedin.com/in/vugs/"
