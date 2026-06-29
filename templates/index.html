@@ -11,7 +11,9 @@
 <body>
     <main>
         <section class="hero">
-            <img src="{{ profile.avatar }}" alt="avatar" class="hero__avatar">
+            <div class="hero__avatar-frame">
+                <img src="{{ profile.avatar }}" alt="avatar" class="hero__avatar">
+            </div>
             <h1 class="hero__name">{{ profile.name }}</h1>
             <ul class="hero__lines">
                 {% for line in profile.hero_lines %}

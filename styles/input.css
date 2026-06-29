@@ -37,14 +37,33 @@ main {
 }
 
 .hero__avatar {
-    width: 16rem;
-    height: 16rem;
+    width: clamp(14rem, 42vw, 24rem);
+    height: clamp(14rem, 42vw, 24rem);
     border-radius: 50%;
     object-fit: cover;
     border: 2px solid rgba(255, 255, 255, 0.85);
     box-shadow:
         0 24px 60px rgba(15, 23, 42, 0.18),
         0 0 0 1px rgba(148, 163, 184, 0.35);
+}
+
+.hero__avatar-frame {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    border-radius: 50%;
+}
+
+.hero__avatar-frame::before {
+    position: absolute;
+    inset: -1.25rem;
+    z-index: -1;
+    content: "";
+    border-radius: 50%;
+    background:
+        radial-gradient(circle, rgba(245, 158, 11, 0.28), transparent 62%),
+        radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.65), transparent 32%);
+    filter: blur(8px);
 }
 
 .hero__name {
