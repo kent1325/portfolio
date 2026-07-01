@@ -32,6 +32,10 @@ smoke:
     test -f dist/assets/icons/docker.svg
     grep -q "/assets/scripts/hero-lines.js" dist/index.html
     test -f dist/assets/scripts/hero-lines.js
+    grep -q "/assets/icons/linkedin.svg" dist/index.html
+    grep -q "/assets/icons/github.svg" dist/index.html
+    test -f dist/assets/icons/linkedin.svg
+    test -f dist/assets/icons/github.svg
 
 check: format-check lint test build smoke
 

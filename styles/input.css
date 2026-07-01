@@ -215,7 +215,7 @@ main {
 
 .hero__links a {
     padding: 0.75rem 1rem;
-    color: rgb(15, 23, 42);
+    color: rgb(71, 85, 105);
     font-weight: 700;
     text-decoration: none;
     background: rgba(255, 255, 255, 0.72);
@@ -226,7 +226,48 @@ main {
 
 .hero__links a:hover {
     transform: translateY(-1px);
-    border-color: rgba(71, 85, 105, 0.45);
+}
+
+.hero__social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    opacity: 0.68;
+    filter: grayscale(1);
+    transition:
+        opacity 160ms ease,
+        filter 160ms ease,
+        transform 160ms ease,
+        border-color 160ms ease;
+}
+
+.hero__social-link img {
+    width: 1.25rem;
+    height: 1.25rem;
+    object-fit: contain;
+}
+
+.hero__social-link:hover {
+    opacity: 1;
+    filter: none;
+}
+
+.hero__social-link--linkedin {
+    color: #0575b3;
+}
+
+.hero__social-link--linkedin:hover {
+    color: #0575b3;
+    border-color: rgba(5, 117, 179, 0.45);
+}
+
+.hero__social-link--github {
+    color: rgb(0, 0, 0);
+}
+
+.hero__social-link--github:hover {
+    color: rgb(0, 0, 0);
+    border-color: rgba(0, 0, 0, 0.45);
 }
 
 .technology-marquee {

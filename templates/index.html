@@ -38,8 +38,14 @@
             </ul>
 
             <p class="hero__links">
-                <a href="{{ profile.links.linkedin }}">LinkedIn</a>
-                <a href="{{ profile.links.github }}">GitHub</a>
+                <a href="{{ profile.links.linkedin }}" class="hero__social-link hero__social-link--linkedin">
+                    <img src="/assets/icons/linkedin.svg" alt="">
+                    LinkedIn
+                </a>
+                <a href="{{ profile.links.github }}" class="hero__social-link hero__social-link--github">
+                    <img src="/assets/icons/github.svg" alt="">
+                    GitHub
+                </a>
             </p>
         </section>
         <section aria-label="Technologies" class="technology-marquee">
