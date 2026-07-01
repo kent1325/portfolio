@@ -11,70 +11,72 @@
 <body>
     <main>
         <section class="hero">
-            <div class="hero__avatar-frame">
-                <span class="hero__logo-pill hero__logo-pill--python" aria-hidden="true">
-                    <img src="/assets/icons/python.svg" alt="">
-                    Python
-                </span>
-                <span class="hero__logo-pill hero__logo-pill--pytorch" aria-hidden="true">
-                    <img src="/assets/icons/pytorch.svg" alt="">
-                    PyTorch
-                </span>
-                <span class="hero__logo-pill hero__logo-pill--databricks" aria-hidden="true">
-                    <img src="/assets/icons/databricks.svg" alt="">
-                    Databricks
-                </span>
-                <span class="hero__logo-pill hero__logo-pill--hugging-face" aria-hidden="true">
-                    <img src="/assets/icons/huggingface.svg" alt="">
-                    Hugging Face
-                </span>
-                <img src="{{ profile.avatar }}" alt="avatar" class="hero__avatar">
-            </div>
-            <h1 class="hero__name">{{ profile.name }}</h1>
-            <ul class="hero__lines">
-                {% for line in profile.hero_lines %}
-                <li class="hero__line">{{ line }}</li>
-                {% endfor %}
-            </ul>
+            <div class="hero__content">
+                <div class="hero__avatar-frame">
+                    <span class="hero__logo-pill hero__logo-pill--python" aria-hidden="true">
+                        <img src="/assets/icons/python.svg" alt="">
+                        Python
+                    </span>
+                    <span class="hero__logo-pill hero__logo-pill--pytorch" aria-hidden="true">
+                        <img src="/assets/icons/pytorch.svg" alt="">
+                        PyTorch
+                    </span>
+                    <span class="hero__logo-pill hero__logo-pill--databricks" aria-hidden="true">
+                        <img src="/assets/icons/databricks.svg" alt="">
+                        Databricks
+                    </span>
+                    <span class="hero__logo-pill hero__logo-pill--hugging-face" aria-hidden="true">
+                        <img src="/assets/icons/huggingface.svg" alt="">
+                        Hugging Face
+                    </span>
+                    <img src="{{ profile.avatar }}" alt="avatar" class="hero__avatar">
+                </div>
+                <h1 class="hero__name">{{ profile.name }}</h1>
+                <ul class="hero__lines">
+                    {% for line in profile.hero_lines %}
+                    <li class="hero__line">{{ line }}</li>
+                    {% endfor %}
+                </ul>
 
-            <p class="hero__links">
-                <a href="{{ profile.links.linkedin }}" class="hero__social-link hero__social-link--linkedin">
-                    <img src="/assets/icons/linkedin.svg" alt="">
-                    LinkedIn
-                </a>
-                <a href="{{ profile.links.github }}" class="hero__social-link hero__social-link--github">
-                    <img src="/assets/icons/github.svg" alt="">
-                    GitHub
-                </a>
-            </p>
-        </section>
-        <section aria-label="Technologies" class="technology-marquee">
-            <div class="technology-marquee__track">
-                <ul class="technology-marquee__list">
-                    {% for technology in technologies %}
-                    <li class="technology-marquee__item">
-                        {% if technology.icon %}
-                        <img src="{{ technology.icon }}" alt="{{ technology.tag if not technology.label else '' }}" class="technology-marquee__icon">
-                        {% endif %}
-                        {% if technology.label %}
-                        <span>{{ technology.label }}</span>
-                        {% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
-                <ul aria-hidden="true" class="technology-marquee__list">
-                    {% for technology in technologies %}
-                    <li class="technology-marquee__item">
-                        {% if technology.icon %}
-                        <img src="{{ technology.icon }}" alt="" class="technology-marquee__icon">
-                        {% endif %}
-                        {% if technology.label %}
-                        <span>{{ technology.label }}</span>
-                        {% endif %}
-                    </li>
-                    {% endfor %}
-                </ul>
+                <p class="hero__links">
+                    <a href="{{ profile.links.linkedin }}" class="hero__social-link hero__social-link--linkedin">
+                        <img src="/assets/icons/linkedin.svg" alt="">
+                        LinkedIn
+                    </a>
+                    <a href="{{ profile.links.github }}" class="hero__social-link hero__social-link--github">
+                        <img src="/assets/icons/github.svg" alt="">
+                        GitHub
+                    </a>
+                </p>
             </div>
+            <section aria-label="Technologies" class="technology-marquee">
+                <div class="technology-marquee__track">
+                    <ul class="technology-marquee__list">
+                        {% for technology in technologies %}
+                        <li class="technology-marquee__item">
+                            {% if technology.icon %}
+                            <img src="{{ technology.icon }}" alt="{{ technology.tag if not technology.label else '' }}" class="technology-marquee__icon">
+                            {% endif %}
+                            {% if technology.label %}
+                            <span>{{ technology.label }}</span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <ul aria-hidden="true" class="technology-marquee__list">
+                        {% for technology in technologies %}
+                        <li class="technology-marquee__item">
+                            {% if technology.icon %}
+                            <img src="{{ technology.icon }}" alt="" class="technology-marquee__icon">
+                            {% endif %}
+                            {% if technology.label %}
+                            <span>{{ technology.label }}</span>
+                            {% endif %}
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </section>
         </section>
         {% if latest_posts is defined and latest_posts|length > 0 %}
         <section>
