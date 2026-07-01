@@ -30,9 +30,10 @@ technologies:
     label: Hugging Face
     icon: /assets/icons/huggingface.svg
   - tag: pytorch
-    label: Pytorch
+    label: PyTorch
     icon: /assets/icons/pytorch.svg
   - tag: scikit-learn
+    label: scikit-learn
     icon: /assets/icons/scikitlearn.svg
   - tag: scipy
     label: SciPy
@@ -40,3 +41,27 @@ technologies:
   - tag: uv
     label: uv
     icon: /assets/icons/uv.svg
+  - tag: pi
+    label: Pi
+    icon: /assets/icons/pi.svg
+  - tag: databricks
+    label: Databricks
+    icon: /assets/icons/databricks.svg
+  - tag: qdrant
+    label: Qdrant
+    icon: /assets/icons/qdrant.svg
+  - tag: polars
+    label: Polars
+    icon: /assets/icons/polars.svg
+  - tag: weightsandbiases
+    label: Weights & Biases
+    icon: /assets/icons/weightsandbiases.svg
+  - tag: optuna
+    label: Optuna
+    icon: /assets/icons/optuna.svg
+  - tag: numpy
+    label: NumPy
+    icon: /assets/icons/numpy.svg
+  - tag: redis
+    label: Redis
+    icon: /assets/icons/redis.svg
