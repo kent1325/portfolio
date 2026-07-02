@@ -71,9 +71,9 @@
         {% if latest_posts is defined and latest_posts|length > 0 %}
         <section class="latest-posts" aria-labelledby="latest-posts-heading">
             <div class="latest-posts__header">
-                <h2 id="latest-posts-heading" class="latest-posts__title">Latest posts</h2>
-                <p class="latest-posts__intro">
-                    Short notes, thoughts, and projects posts focusing on data science and machine learning.
+                <h2 id="latest-posts-heading" class="latest-posts__title">Latest thoughts</h2>
+                <p class="latest-posts__more">
+                    <a href="/blog/" class="latest-posts__more-link">Read all <span aria-hidden="true">→</span></a>
                 </p>
             </div>
             <ul class="latest-posts__list">
@@ -102,9 +102,6 @@
                 </li>
                 {% endfor %}
             </ul>
-            <p class="latest-posts__more">
-                <a href="/blog/" class="latest-posts__more-link">Read all blogs <span aria-hidden="true">→</span></a>
-            </p>
         </section>
         {% endif %}
     </main>

@@ -8,22 +8,33 @@
 </head>
 
 <body>
-    <main>
-        <h1>{{ post.title }}</h1>
-        <em>Published: {{ post.published_date }}</em>
-        {% if post.updated_date %}
-        <em>Updated: {{ post.updated_date }}</em>
-        {% endif %}
-        <p>{{ post.summary }}</p>
-        {% if post.tags %}
-        <ul>
-            {% for tag in post.tags %}
-            <li>{{ tag }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
-        {{ body_html | safe }}
-        <p><a href="/blog/">Back to blog</a></p>
+    <main class="page-shell page-shell--narrow">
+        <article class="blog-post">
+            <p class="page-header__back">
+                <a href="/blog/" class="back-link"><span aria-hidden="true">←</span> Back to blog</a>
+            </p>
+            <header class="blog-post__header">
+                <div class="blog-post__meta">
+                    <time datetime="{{ post.published_date }}">Published {{ post.published_date }}</time>
+                    {% if post.updated_date %}
+                    <span aria-hidden="true">·</span>
+                    <time datetime="{{ post.updated_date }}">Updated {{ post.updated_date }}</time>
+                    {% endif %}
+                </div>
+                <h1 class="blog-post__title">{{ post.title }}</h1>
+                <p class="blog-post__summary">{{ post.summary }}</p>
+                {% if post.tags %}
+                <ul class="blog-post__tags" aria-label="Tags for {{ post.title }}">
+                    {% for tag in post.tags %}
+                    <li>{{ tag }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </header>
+            <div class="blog-post__body">
+                {{ body_html | safe }}
+            </div>
+        </article>
     </main>
 </body>
 </html>

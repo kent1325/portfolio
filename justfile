@@ -20,7 +20,7 @@ smoke:
     grep -q "/assets/icons/python.svg" dist/index.html
     grep -q "/assets/icons/fastapi.svg" dist/index.html
     grep -q "/assets/icons/docker.svg" dist/index.html
-    grep -q "Latest posts" dist/index.html
+    grep -q "latest-posts-heading" dist/index.html
     grep -q "latest-posts" dist/index.html
     grep -q "latest-post-card" dist/index.html
     grep -q "site-footer" dist/index.html
@@ -29,6 +29,9 @@ smoke:
     grep -q "/blog/lp-vs-ilp/" dist/index.html
     test -f dist/blog/lp-vs-ilp/index.html
     test -f dist/blog/data-science-in-esports/index.html
+    grep -q "blog-index" dist/blog/index.html
+    grep -q "blog-post" dist/blog/lp-vs-ilp/index.html
+    grep -q "blog-post__body" dist/blog/lp-vs-ilp/index.html
     test -f dist/assets/styles.css
     grep -q "technology-marquee-scroll" dist/assets/styles.css
     test -f dist/assets/icons/python.svg

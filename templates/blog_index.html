@@ -3,40 +3,54 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Blog</title>
+    <title>Blog Posts</title>
     <link rel="stylesheet" href="/assets/styles.css">
 </head>
 
 <body>
-    <main>
-        <h1>Blog</h1>
+    <main class="page-shell">
+        <header class="page-header">
+            <p class="page-header__back">
+                <a href="/" class="back-link"><span aria-hidden="true">←</span> Back home</a>
+            </p>
+            <h1 class="page-title">Posts</h1>
+            <p class="page-intro">
+                Short notes, thoughts, and projects posts focusing on data science and machine learning.
+            </p>
+        </header>
 
         {% if posts is defined and posts|length > 0 %}
-        <div>
-            <ul>
+        <section class="blog-index" aria-label="Published posts">
+            <ul class="blog-index__list">
                 {% for post in posts %}
-                <li>
-                    <h2><a href="/blog/{{ post.slug }}/">{{ post.title }}</a></h2>
-                    <em>Published: {{ post.published_date }}</em>
-                    {% if post.updated_date %}
-                    <em>Updated: {{ post.updated_date }}</em>
-                    {% endif %}
-                    <p>{{ post.summary }}</p>
-                    {% if post.tags %}
-                    <ul>
-                        {% for tag in post.tags %}
-                        <li>{{ tag }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
+                <li class="blog-index-card">
+                    <article class="blog-index-card__article">
+                        <div class="blog-index-card__meta">
+                            <time datetime="{{ post.published_date }}">Published {{ post.published_date }}</time>
+                            {% if post.updated_date %}
+                            <span aria-hidden="true">·</span>
+                            <time datetime="{{ post.updated_date }}">Updated {{ post.updated_date }}</time>
+                            {% endif %}
+                        </div>
+                        <h2 class="blog-index-card__title">
+                            <a href="/blog/{{ post.slug }}/">{{ post.title }}</a>
+                        </h2>
+                        <p class="blog-index-card__summary">{{ post.summary }}</p>
+                        {% if post.tags %}
+                        <ul class="blog-index-card__tags" aria-label="Tags for {{ post.title }}">
+                            {% for tag in post.tags %}
+                            <li>{{ tag }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </article>
                 </li>
                 {% endfor %}
             </ul>
-        </div>
+        </section>
         {% else %}
-        <p>No posts published yet.</p>
+        <p class="empty-state">No posts published yet.</p>
         {% endif %}
-        <p><a href="/">Back home</a></p>
     </main>
 </body>
 </html>
