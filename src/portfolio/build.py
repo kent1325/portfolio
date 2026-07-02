@@ -74,7 +74,7 @@ def build_site() -> None:
 
     blog_posts: list[BlogPost] = load_blog_posts(ROOT_PATH)
     technologies: list[Technology] = load_technologies(ROOT_PATH)
-    latest_posts: list[BlogPost] = blog_posts[:5]
+    latest_posts: list[BlogPost] = blog_posts[:4]
     hero_logo_technologies: list[Technology] = get_hero_logo_technologies(profile, technologies)
 
     index_html = index_template.render(
