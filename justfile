@@ -23,6 +23,8 @@ smoke:
     grep -q "Latest posts" dist/index.html
     grep -q "latest-posts" dist/index.html
     grep -q "latest-post-card" dist/index.html
+    grep -q "site-footer" dist/index.html
+    grep -q "Built with Python" dist/index.html
     grep -q "/blog/data-science-in-esports/" dist/index.html
     grep -q "/blog/lp-vs-ilp/" dist/index.html
     test -f dist/blog/lp-vs-ilp/index.html
