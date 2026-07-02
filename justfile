@@ -21,6 +21,8 @@ smoke:
     grep -q "/assets/icons/fastapi.svg" dist/index.html
     grep -q "/assets/icons/docker.svg" dist/index.html
     grep -q "Latest posts" dist/index.html
+    grep -q "latest-posts" dist/index.html
+    grep -q "latest-post-card" dist/index.html
     grep -q "/blog/data-science-in-esports/" dist/index.html
     grep -q "/blog/lp-vs-ilp/" dist/index.html
     test -f dist/blog/lp-vs-ilp/index.html
