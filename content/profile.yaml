@@ -1,5 +1,10 @@
 name: "Kent Vugs Nielsen"
 avatar: "/assets/images/profile-picture.jpg"
+hero_logos:
+  - python
+  - pytorch
+  - databricks
+  - hugging-face
 hero_lines: 
   - "I Do Data Science"
   - "I Do ML & AI Engineering"

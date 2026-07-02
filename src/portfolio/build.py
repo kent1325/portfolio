@@ -3,7 +3,14 @@ from pathlib import Path
 
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
-from .content import BlogPost, Technology, load_blog_posts, load_profile, load_technologies
+from .content import (
+    BlogPost,
+    Technology,
+    get_hero_logo_technologies,
+    load_blog_posts,
+    load_profile,
+    load_technologies,
+)
 from .markdown import render_markdown
 
 
@@ -68,9 +75,13 @@ def build_site() -> None:
     blog_posts: list[BlogPost] = load_blog_posts(ROOT_PATH)
     technologies: list[Technology] = load_technologies(ROOT_PATH)
     latest_posts: list[BlogPost] = blog_posts[:5]
+    hero_logo_technologies: list[Technology] = get_hero_logo_technologies(profile, technologies)
 
     index_html = index_template.render(
-        profile=profile, technologies=technologies, latest_posts=latest_posts
+        profile=profile,
+        technologies=technologies,
+        latest_posts=latest_posts,
+        hero_logo_technologies=hero_logo_technologies,
     )
     blog_index_html = blog_index_template.render(posts=blog_posts)
 

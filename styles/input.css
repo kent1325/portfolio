@@ -110,7 +110,7 @@ main {
     object-fit: contain;
 }
 
-.hero__logo-pill--python {
+.hero__logo-pill--slot-1 {
     --pill-x: -100%;
     --pill-rotation: -8deg;
 
@@ -118,7 +118,7 @@ main {
     left: 10%;
 }
 
-.hero__logo-pill--pytorch {
+.hero__logo-pill--slot-2 {
     --pill-x: 100%;
     --pill-rotation: 7deg;
 
@@ -126,7 +126,7 @@ main {
     right: 4%;
 }
 
-.hero__logo-pill--databricks {
+.hero__logo-pill--slot-3 {
     --pill-x: 100%;
     --pill-rotation: -5deg;
 
@@ -134,7 +134,7 @@ main {
     bottom: 24%;
 }
 
-.hero__logo-pill--hugging-face {
+.hero__logo-pill--slot-4 {
     --pill-x: -100%;
     --pill-rotation: 6deg;
 

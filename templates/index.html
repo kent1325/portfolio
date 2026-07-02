@@ -13,22 +13,12 @@
         <section class="hero">
             <div class="hero__content">
                 <div class="hero__avatar-frame">
-                    <span class="hero__logo-pill hero__logo-pill--python" aria-hidden="true">
-                        <img src="/assets/icons/python.svg" alt="">
-                        Python
+                    {% for hero_logo_technology in hero_logo_technologies %}
+                    <span class="hero__logo-pill hero__logo-pill--slot-{{ loop.index }}" aria-hidden="true">
+                        <img src="{{ hero_logo_technology.icon }}" alt="">
+                        {{ hero_logo_technology.label }}
                     </span>
-                    <span class="hero__logo-pill hero__logo-pill--pytorch" aria-hidden="true">
-                        <img src="/assets/icons/pytorch.svg" alt="">
-                        PyTorch
-                    </span>
-                    <span class="hero__logo-pill hero__logo-pill--databricks" aria-hidden="true">
-                        <img src="/assets/icons/databricks.svg" alt="">
-                        Databricks
-                    </span>
-                    <span class="hero__logo-pill hero__logo-pill--hugging-face" aria-hidden="true">
-                        <img src="/assets/icons/huggingface.svg" alt="">
-                        Hugging Face
-                    </span>
+                    {% endfor %}
                     <img src="{{ profile.avatar }}" alt="avatar" class="hero__avatar">
                 </div>
                 <h1 class="hero__name">{{ profile.name }}</h1>

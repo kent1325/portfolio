@@ -8,6 +8,7 @@ import yaml
 from pydantic import BaseModel, ConfigDict, field_validator, model_validator
 
 SLUG_PATTERN = compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+HERO_LOGOS_LIMIT = 4
 
 
 class ProfileLinks(BaseModel):
@@ -42,6 +43,7 @@ class Profile(BaseModel):
 
     name: str
     avatar: str
+    hero_logos: list[str]
     hero_lines: list[str]
     links: ProfileLinks
 
@@ -63,6 +65,23 @@ class Profile(BaseModel):
         if ".." in value:
             raise ValueError("avatar must not contain '..'")
         return value
+
+    @field_validator("hero_logos")
+    @classmethod
+    def hero_logos_must_be_valid_lowercase_kebab_case(cls, value: list[str]) -> list[str]:
+        def _validate_slug(line: str) -> str:
+            cleaned = line.strip()
+
+            if SLUG_PATTERN.fullmatch(cleaned):
+                return cleaned
+
+            raise ValueError(f"hero logos must be lowercase kebab-case, but got '{line}'")
+
+        value_cleaned = [_validate_slug(line) for line in value]
+        if not value_cleaned:
+            raise ValueError("The 'hero_logos' profile field must contain at least one item")
+
+        return value_cleaned
 
     @field_validator("hero_lines")
     @classmethod
@@ -276,3 +295,56 @@ def _validate_technology_icon_exists(root_path: Path, technology: Technology) ->
     path: Path = root_path / technology.icon.removeprefix("/")
     if not path.is_file():
         raise FileNotFoundError(f"icon file not found for '{technology.tag}':{path}")
+
+
+def get_hero_logo_technologies(
+    profile: Profile, technologies: list[Technology]
+) -> list[Technology]:
+    if not profile.hero_logos:
+        raise ValueError("hero logos cannot be empty")
+
+    if len(profile.hero_logos) > HERO_LOGOS_LIMIT:
+        raise ValueError(
+            f"the number of hero logos must be ≤ {HERO_LOGOS_LIMIT}, "
+            f"but got {len(profile.hero_logos)}"
+        )
+
+    _raise_if_duplicates_exist(profile.hero_logos)
+
+    technologies_by_tag = {technology.tag: technology for technology in technologies}
+    missing_tags = set(profile.hero_logos) - technologies_by_tag.keys()
+    if missing_tags:
+        raise ValueError(f"Missing tag(s): {sorted(missing_tags)}")
+
+    hero_logo_technologies = [technologies_by_tag[tag] for tag in profile.hero_logos]
+    missing_icon_tags = [
+        technology.tag for technology in hero_logo_technologies if technology.icon is None
+    ]
+    if missing_icon_tags:
+        raise ValueError(
+            f"hero logo technology icon cannot be None for tag(s): {sorted(missing_icon_tags)}"
+        )
+
+    missing_label_tags = [
+        technology.tag for technology in hero_logo_technologies if technology.label is None
+    ]
+    if missing_label_tags:
+        raise ValueError(
+            f"hero logo technology label cannot be None for tag(s): {sorted(missing_label_tags)}"
+        )
+
+    return hero_logo_technologies
+
+
+def _raise_if_duplicates_exist(items: list[str]) -> None:
+    seen = set()
+    duplicates = []
+
+    for item in items:
+        if item in seen and item not in duplicates:
+            duplicates.append(item)
+        else:
+            seen.add(item)
+
+    if duplicates:
+        raise ValueError(f"Duplicate value(s) found: {duplicates}")
