@@ -16,6 +16,7 @@
 body {
     margin: 0;
     min-height: 100vh;
+    overflow-x: clip;
     color: rgb(15, 23, 42);
     background:
         var(--page-top-glow),
@@ -569,7 +570,82 @@ main {
     color: rgb(180, 83, 9);
 }
 
+@media (max-width: 56rem) {
+    .hero__logo-pill {
+        gap: 0.45rem;
+        padding: 0.55rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .hero__logo-pill img {
+        width: 1.2rem;
+        height: 1.2rem;
+    }
+
+    .technology-marquee__list {
+        gap: 2.5rem;
+        padding-inline-end: 2.5rem;
+    }
+}
+
 @media (max-width: 42rem) {
+    main,
+    .site-footer {
+        width: min(100% - 1.25rem, 72rem);
+    }
+
+    .hero {
+        gap: clamp(1.25rem, 4vh, 2rem);
+        padding-block-start: clamp(1.5rem, 5vh, 3rem);
+    }
+
+    .hero__avatar {
+        width: clamp(12rem, 66vw, 18rem);
+        height: clamp(12rem, 66vw, 18rem);
+    }
+
+    .hero__avatar-frame::after {
+        width: min(32rem, 108vw);
+        height: min(32rem, 108vw);
+    }
+
+    .hero__logo-pill {
+        display: none;
+    }
+
+    .hero__links {
+        margin-top: 0.35rem;
+    }
+
+    .hero__links a {
+        padding: 0.7rem 0.9rem;
+    }
+
+    .technology-marquee {
+        padding-block: 1rem;
+    }
+
+    .technology-marquee__item {
+        font-size: 1rem;
+    }
+
+    .technology-marquee__icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+
+    .latest-posts {
+        padding-block: clamp(3.5rem, 12vw, 5rem);
+    }
+
+    .latest-posts__header {
+        margin-bottom: 2rem;
+    }
+
+    .latest-post-card__article {
+        border-radius: 1.25rem;
+    }
+
     .site-footer__inner {
         align-items: flex-start;
         flex-direction: column;
