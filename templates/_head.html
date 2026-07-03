@@ -3,6 +3,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ page_title }}</title>
     <meta name="description" content="{{ page_description }}">
+    <link rel="canonical" href="{{ page_url }}">
+    <meta property="og:site_name" content="{{ site_name }}">
+    <meta property="og:title" content="{{ page_title }}">
+    <meta property="og:description" content="{{ page_description }}">
+    <meta property="og:type" content="{{ page_type }}">
+    <meta property="og:url" content="{{ page_url }}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ page_title }}">
+    <meta name="twitter:description" content="{{ page_description }}">
     <link rel="stylesheet" href="/assets/styles.css">
     {% if include_hero_script | default(false) %}
     <script src="/assets/scripts/hero-lines.js" defer></script>

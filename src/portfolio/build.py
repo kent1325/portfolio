@@ -28,6 +28,11 @@ def _get_project_root() -> Path:
 
 
 ROOT_PATH = _get_project_root()
+SITE_URL = "https://kvugs.github.io"
+
+
+def _page_url(path: str) -> str:
+    return f"{SITE_URL}{path}"
 
 
 def _drop_dist_dir() -> None:
@@ -90,14 +95,20 @@ def build_site() -> None:
         technologies=technologies,
         latest_posts=latest_posts,
         hero_logo_technologies=hero_logo_technologies,
+        site_name=site_name,
         page_title=site_name,
         page_description=home_description,
+        page_url=_page_url("/"),
+        page_type="website",
         include_hero_script=True,
     )
     blog_index_html = blog_index_template.render(
         posts=blog_posts,
+        site_name=site_name,
         page_title=f"Posts | {site_name}",
         page_description=blog_index_description,
+        page_url=_page_url("/blog/"),
+        page_type="website",
     )
 
     _drop_dist_dir()
@@ -108,8 +119,11 @@ def build_site() -> None:
         blog_post_html = blog_post_template.render(
             post=blog_post,
             body_html=render_markdown(blog_post.body),
+            site_name=site_name,
             page_title=f"{blog_post.title} | {site_name}",
             page_description=blog_post.summary,
+            page_url=_page_url(f"/blog/{blog_post.slug}/"),
+            page_type="article",
         )
         blog_post_html_out_path = ROOT_PATH / "dist" / "blog" / blog_post.slug / "index.html"
         blog_post_html_out_path.parent.mkdir(parents=True, exist_ok=True)

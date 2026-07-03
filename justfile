@@ -19,10 +19,16 @@ smoke:
     test -f dist/blog/index.html
     grep -q '<title>Kent Vugs Nielsen</title>' dist/index.html
     grep -q '<meta name="description" content=' dist/index.html
+    grep -q '<link rel="canonical" href="https://kvugs.github.io/">' dist/index.html
+    grep -q '<meta property="og:type" content="website">' dist/index.html
+    grep -q '<meta name="twitter:card" content="summary">' dist/index.html
     grep -q '<title>Posts | Kent Vugs Nielsen</title>' dist/blog/index.html
     grep -q '<meta name="description" content=' dist/blog/index.html
+    grep -q '<link rel="canonical" href="https://kvugs.github.io/blog/">' dist/blog/index.html
     grep -q '<title>Linear Programming vs. Integer Linear Programming | Kent Vugs Nielsen</title>' dist/blog/lp-vs-ilp/index.html
     grep -q '<meta name="description" content="Mathematical Optimization.">' dist/blog/lp-vs-ilp/index.html
+    grep -q '<link rel="canonical" href="https://kvugs.github.io/blog/lp-vs-ilp/">' dist/blog/lp-vs-ilp/index.html
+    grep -q '<meta property="og:type" content="article">' dist/blog/lp-vs-ilp/index.html
     grep -q "/assets/icons/python.svg" dist/index.html
     grep -q "/assets/icons/fastapi.svg" dist/index.html
     grep -q "/assets/icons/docker.svg" dist/index.html
