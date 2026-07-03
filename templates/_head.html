@@ -1,0 +1,10 @@
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ page_description }}">
+    <link rel="stylesheet" href="/assets/styles.css">
+    {% if include_hero_script | default(false) %}
+    <script src="/assets/scripts/hero-lines.js" defer></script>
+    {% endif %}
+</head>

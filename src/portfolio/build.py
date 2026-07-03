@@ -76,14 +76,29 @@ def build_site() -> None:
     technologies: list[Technology] = load_technologies(ROOT_PATH)
     latest_posts: list[BlogPost] = blog_posts[:4]
     hero_logo_technologies: list[Technology] = get_hero_logo_technologies(profile, technologies)
+    site_name = profile.name
+    home_description = (
+        f"{site_name}'s portfolio with writing and projects focused on data science, "
+        "machine learning, and engineering."
+    )
+    blog_index_description = (
+        "Short notes, thoughts, and project posts focusing on data science and machine learning."
+    )
 
     index_html = index_template.render(
         profile=profile,
         technologies=technologies,
         latest_posts=latest_posts,
         hero_logo_technologies=hero_logo_technologies,
+        page_title=site_name,
+        page_description=home_description,
+        include_hero_script=True,
     )
-    blog_index_html = blog_index_template.render(posts=blog_posts)
+    blog_index_html = blog_index_template.render(
+        posts=blog_posts,
+        page_title=f"Posts | {site_name}",
+        page_description=blog_index_description,
+    )
 
     _drop_dist_dir()
 
@@ -91,7 +106,10 @@ def build_site() -> None:
     blog_index_html_out_path = ROOT_PATH / "dist" / "blog" / "index.html"
     for blog_post in blog_posts:
         blog_post_html = blog_post_template.render(
-            post=blog_post, body_html=render_markdown(blog_post.body)
+            post=blog_post,
+            body_html=render_markdown(blog_post.body),
+            page_title=f"{blog_post.title} | {site_name}",
+            page_description=blog_post.summary,
         )
         blog_post_html_out_path = ROOT_PATH / "dist" / "blog" / blog_post.slug / "index.html"
         blog_post_html_out_path.parent.mkdir(parents=True, exist_ok=True)
