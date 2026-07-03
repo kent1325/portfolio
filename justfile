@@ -25,6 +25,7 @@ smoke:
     grep -q '<meta property="og:image:width" content="1200">' dist/index.html
     grep -q '<meta property="og:image:height" content="630">' dist/index.html
     grep -q '<meta name="twitter:card" content="summary_large_image">' dist/index.html
+    grep -q '<link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">' dist/index.html
     grep -q '<title>Posts | Kent Vugs Nielsen</title>' dist/blog/index.html
     grep -q '<meta name="description" content=' dist/blog/index.html
     grep -q '<link rel="canonical" href="https://kvugs.github.io/blog/">' dist/blog/index.html
@@ -50,6 +51,7 @@ smoke:
     grep -q "blog-post__body" dist/blog/lp-vs-ilp/index.html
     test -f dist/assets/styles.css
     test -f dist/assets/images/social-preview.png
+    test -f dist/assets/images/favicon.svg
     grep -q "technology-marquee-scroll" dist/assets/styles.css
     test -f dist/assets/icons/python.svg
     test -f dist/assets/icons/fastapi.svg
