@@ -29,6 +29,7 @@ def _get_project_root() -> Path:
 
 ROOT_PATH = _get_project_root()
 SITE_URL = "https://kvugs.github.io"
+SOCIAL_IMAGE_PATH = "/assets/images/social-preview.png"
 
 
 def _page_url(path: str) -> str:
@@ -89,6 +90,8 @@ def build_site() -> None:
     blog_index_description = (
         "Short notes, thoughts, and project posts focusing on data science and machine learning."
     )
+    social_image_url = _page_url(SOCIAL_IMAGE_PATH)
+    social_image_alt = f"{site_name} portfolio preview"
 
     index_html = index_template.render(
         profile=profile,
@@ -100,6 +103,8 @@ def build_site() -> None:
         page_description=home_description,
         page_url=_page_url("/"),
         page_type="website",
+        page_image_url=social_image_url,
+        page_image_alt=social_image_alt,
         include_hero_script=True,
     )
     blog_index_html = blog_index_template.render(
@@ -109,6 +114,8 @@ def build_site() -> None:
         page_description=blog_index_description,
         page_url=_page_url("/blog/"),
         page_type="website",
+        page_image_url=social_image_url,
+        page_image_alt=social_image_alt,
     )
 
     _drop_dist_dir()
@@ -124,6 +131,8 @@ def build_site() -> None:
             page_description=blog_post.summary,
             page_url=_page_url(f"/blog/{blog_post.slug}/"),
             page_type="article",
+            page_image_url=social_image_url,
+            page_image_alt=social_image_alt,
         )
         blog_post_html_out_path = ROOT_PATH / "dist" / "blog" / blog_post.slug / "index.html"
         blog_post_html_out_path.parent.mkdir(parents=True, exist_ok=True)

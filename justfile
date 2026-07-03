@@ -21,7 +21,10 @@ smoke:
     grep -q '<meta name="description" content=' dist/index.html
     grep -q '<link rel="canonical" href="https://kvugs.github.io/">' dist/index.html
     grep -q '<meta property="og:type" content="website">' dist/index.html
-    grep -q '<meta name="twitter:card" content="summary">' dist/index.html
+    grep -q '<meta property="og:image" content="https://kvugs.github.io/assets/images/social-preview.png">' dist/index.html
+    grep -q '<meta property="og:image:width" content="1200">' dist/index.html
+    grep -q '<meta property="og:image:height" content="630">' dist/index.html
+    grep -q '<meta name="twitter:card" content="summary_large_image">' dist/index.html
     grep -q '<title>Posts | Kent Vugs Nielsen</title>' dist/blog/index.html
     grep -q '<meta name="description" content=' dist/blog/index.html
     grep -q '<link rel="canonical" href="https://kvugs.github.io/blog/">' dist/blog/index.html
@@ -29,6 +32,7 @@ smoke:
     grep -q '<meta name="description" content="Mathematical Optimization.">' dist/blog/lp-vs-ilp/index.html
     grep -q '<link rel="canonical" href="https://kvugs.github.io/blog/lp-vs-ilp/">' dist/blog/lp-vs-ilp/index.html
     grep -q '<meta property="og:type" content="article">' dist/blog/lp-vs-ilp/index.html
+    grep -q '<meta name="twitter:image" content="https://kvugs.github.io/assets/images/social-preview.png">' dist/blog/lp-vs-ilp/index.html
     grep -q "/assets/icons/python.svg" dist/index.html
     grep -q "/assets/icons/fastapi.svg" dist/index.html
     grep -q "/assets/icons/docker.svg" dist/index.html
@@ -45,6 +49,7 @@ smoke:
     grep -q "blog-post" dist/blog/lp-vs-ilp/index.html
     grep -q "blog-post__body" dist/blog/lp-vs-ilp/index.html
     test -f dist/assets/styles.css
+    test -f dist/assets/images/social-preview.png
     grep -q "technology-marquee-scroll" dist/assets/styles.css
     test -f dist/assets/icons/python.svg
     test -f dist/assets/icons/fastapi.svg
