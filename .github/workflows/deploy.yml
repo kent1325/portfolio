@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url || steps.deployment_retry.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url }}
     env:
       PAGES_ARTIFACT_NAME: github-pages-${{ github.run_id }}-${{ github.run_attempt }}
 
@@ -67,18 +67,6 @@ jobs:
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
-        continue-on-error: true
-        with:
-          artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
-
-      - name: Wait before retrying Pages deploy
-        if: steps.deployment.outcome == 'failure'
-        run: sleep 60
-
-      - name: Retry deploy to GitHub Pages
-        id: deployment_retry
-        if: steps.deployment.outcome == 'failure'
         uses: actions/deploy-pages@v5
         with:
           artifact_name: ${{ env.PAGES_ARTIFACT_NAME }}
