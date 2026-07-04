@@ -3,7 +3,7 @@ avatar: "/assets/images/profile-picture.jpg"
 hero_logos:
   - python
   - pytorch
-  - databricks
+  - fastapi
   - hugging-face
 hero_lines: 
   - "I Do Data Science"
