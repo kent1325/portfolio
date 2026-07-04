@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 :root {
+    color-scheme: light;
+
     --warm-glow-color: rgba(245, 158, 11, 0.10);
     --warm-text-gradient: linear-gradient(
         90deg,
@@ -11,6 +13,8 @@
     --page-top-glow: radial-gradient(circle at top, var(--warm-glow-color), transparent 34rem);
     --page-surface-gradient: linear-gradient(180deg, rgb(248, 250, 252), rgb(255, 255, 255));
     --warm-section-glow: radial-gradient(circle, var(--warm-glow-color), transparent 68%);
+    --svg-icon-filter: grayscale(1) brightness(0) invert(44%);
+    --svg-icon-opacity: 0.86;
 }
 
 body {
@@ -39,6 +43,57 @@ body {
 main {
     width: min(100% - 2rem, 72rem);
     margin-inline: auto;
+}
+
+img[src$=".svg"] {
+    opacity: var(--svg-icon-opacity);
+    filter: var(--svg-icon-filter);
+    transition:
+        opacity 160ms ease,
+        filter 160ms ease;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: max(1rem, env(safe-area-inset-top));
+    right: max(1rem, env(safe-area-inset-right));
+    z-index: 30;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.65rem 0.85rem;
+    color: rgb(71, 85, 105);
+    font: inherit;
+    font-size: 0.9rem;
+    font-weight: 800;
+    line-height: 1;
+    background: rgba(255, 255, 255, 0.74);
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    border-radius: 9999px;
+    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.10);
+    cursor: pointer;
+    backdrop-filter: blur(14px) saturate(1.15);
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        color 180ms ease,
+        transform 180ms ease;
+}
+
+.theme-toggle[hidden] {
+    display: none;
+}
+
+.theme-toggle:hover {
+    color: rgb(180, 83, 9);
+    border-color: rgba(217, 119, 6, 0.36);
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.13);
+    transform: translateY(-1px);
+}
+
+.theme-toggle__icon {
+    font-size: 1rem;
+    line-height: 1;
 }
 
 .hero {
@@ -265,11 +320,10 @@ main {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
-    opacity: 0.68;
-    filter: grayscale(1);
+    opacity: 0.72;
     transition:
         opacity 160ms ease,
-        filter 160ms ease,
+        color 160ms ease,
         transform 160ms ease,
         border-color 160ms ease;
 }
@@ -282,11 +336,15 @@ main {
 
 .hero__social-link:hover {
     opacity: 1;
+}
+
+.hero__social-link:hover img {
+    opacity: 1;
     filter: none;
 }
 
 .hero__social-link--linkedin {
-    color: #0575b3;
+    color: rgb(71, 85, 105);
 }
 
 .hero__social-link--linkedin:hover {
@@ -295,7 +353,7 @@ main {
 }
 
 .hero__social-link--github {
-    color: rgb(0, 0, 0);
+    color: rgb(71, 85, 105);
 }
 
 .hero__social-link--github:hover {
@@ -346,8 +404,6 @@ main {
     width: 1.75rem;
     height: 1.75rem;
     object-fit: contain;
-    filter: grayscale(1);
-    opacity: 0.8;
 }
 
 @keyframes technology-marquee-scroll {
@@ -870,6 +926,338 @@ main {
 .site-footer__nav a:hover {
     color: rgb(180, 83, 9);
 }
+
+:root[data-theme="dark"] {
+    color-scheme: dark;
+
+    --warm-glow-color: rgba(245, 158, 11, 0.18);
+    --warm-text-gradient: linear-gradient(
+        90deg,
+        rgb(254, 243, 199),
+        rgb(251, 191, 36),
+        rgb(253, 186, 116)
+    );
+    --page-top-glow: radial-gradient(circle at top, var(--warm-glow-color), transparent 34rem);
+    --page-surface-gradient: linear-gradient(180deg, rgb(2, 6, 23), rgb(15, 23, 42));
+    --warm-section-glow: radial-gradient(circle, var(--warm-glow-color), transparent 68%);
+    --svg-icon-filter: grayscale(1) brightness(0) invert(78%);
+    --svg-icon-opacity: 0.9;
+}
+
+:root[data-theme="dark"] body {
+    color: rgb(226, 232, 240);
+}
+
+:root[data-theme="dark"] .hero__avatar {
+    border-color: rgba(248, 250, 252, 0.36);
+    box-shadow:
+        0 28px 70px rgba(0, 0, 0, 0.46),
+        0 0 0 1px rgba(148, 163, 184, 0.22);
+}
+
+:root[data-theme="dark"] .hero__avatar-frame::before {
+    background:
+        radial-gradient(circle, rgba(245, 158, 11, 0.34), transparent 62%),
+        radial-gradient(circle at 35% 30%, rgba(248, 250, 252, 0.18), transparent 32%);
+}
+
+:root[data-theme="dark"] .hero__logo-pill,
+:root[data-theme="dark"] .hero__links a,
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .latest-post-card__article,
+:root[data-theme="dark"] .latest-posts__more-link,
+:root[data-theme="dark"] .blog-index-card__article,
+:root[data-theme="dark"] .empty-state,
+:root[data-theme="dark"] .blog-post__body {
+    color: rgb(226, 232, 240);
+    background: rgba(15, 23, 42, 0.78);
+    border-color: rgba(148, 163, 184, 0.24);
+    box-shadow:
+        0 18px 48px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+:root[data-theme="dark"] .latest-post-card__article:hover,
+:root[data-theme="dark"] .latest-posts__more-link:hover,
+:root[data-theme="dark"] .theme-toggle:hover,
+:root[data-theme="dark"] .blog-index-card__article:hover {
+    border-color: rgba(245, 158, 11, 0.42);
+    box-shadow:
+        0 24px 64px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+:root[data-theme="dark"] .hero__name,
+:root[data-theme="dark"] .latest-post-card__title a,
+:root[data-theme="dark"] .blog-index-card__title a,
+:root[data-theme="dark"] .blog-post__body h2,
+:root[data-theme="dark"] .blog-post__body h3,
+:root[data-theme="dark"] .blog-post__body h4 {
+    color: rgb(248, 250, 252);
+}
+
+:root[data-theme="dark"] .hero__links a,
+:root[data-theme="dark"] .theme-toggle,
+:root[data-theme="dark"] .technology-marquee__item,
+:root[data-theme="dark"] .latest-posts__intro,
+:root[data-theme="dark"] .latest-post-card__summary,
+:root[data-theme="dark"] .latest-posts__more-link,
+:root[data-theme="dark"] .page-intro,
+:root[data-theme="dark"] .blog-index-card__summary,
+:root[data-theme="dark"] .empty-state,
+:root[data-theme="dark"] .blog-post__summary,
+:root[data-theme="dark"] .blog-post__body,
+:root[data-theme="dark"] .blog-post__body blockquote,
+:root[data-theme="dark"] .site-footer,
+:root[data-theme="dark"] .site-footer__nav a,
+:root[data-theme="dark"] .back-link {
+    color: rgb(203, 213, 225);
+}
+
+:root[data-theme="dark"] .latest-post-card__meta,
+:root[data-theme="dark"] .blog-index-card__meta,
+:root[data-theme="dark"] .blog-post__meta {
+    color: rgb(148, 163, 184);
+}
+
+:root[data-theme="dark"] .hero__line:first-child::after {
+    background: rgb(251, 191, 36);
+}
+
+:root[data-theme="dark"] .latest-post-card__title a:hover,
+:root[data-theme="dark"] .blog-index-card__title a:hover,
+:root[data-theme="dark"] .latest-posts__more-link:hover,
+:root[data-theme="dark"] .blog-post__body a,
+:root[data-theme="dark"] .back-link:hover,
+:root[data-theme="dark"] .site-footer__nav a:hover {
+    color: rgb(251, 191, 36);
+}
+
+:root[data-theme="dark"] .blog-post__body a {
+    text-decoration-color: rgba(251, 191, 36, 0.42);
+}
+
+:root[data-theme="dark"] .blog-post__body a:hover {
+    text-decoration-color: rgba(251, 191, 36, 0.84);
+}
+
+:root[data-theme="dark"] .latest-post-card__tags li,
+:root[data-theme="dark"] .blog-index-card__tags li,
+:root[data-theme="dark"] .blog-post__tags li,
+:root[data-theme="dark"] .blog-post__body code {
+    color: rgb(253, 230, 138);
+    background: rgba(120, 53, 15, 0.48);
+    border-color: rgba(245, 158, 11, 0.28);
+}
+
+:root[data-theme="dark"] .blog-post__body pre {
+    background: rgb(2, 6, 23);
+    border: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+:root[data-theme="dark"] .blog-post__body pre code {
+    color: rgb(226, 232, 240);
+    background: transparent;
+    border: 0;
+}
+
+:root[data-theme="dark"] .blog-post__body blockquote {
+    border-left-color: rgba(245, 158, 11, 0.52);
+}
+
+:root[data-theme="dark"] .site-footer__inner {
+    border-top-color: rgba(148, 163, 184, 0.24);
+}
+
+:root[data-theme="dark"] .technology-marquee__icon {
+    opacity: var(--svg-icon-opacity);
+    filter: var(--svg-icon-filter);
+}
+
+:root[data-theme="dark"] .hero__social-link--linkedin:hover {
+    color: #0575b3;
+    border-color: rgba(5, 117, 179, 0.58);
+}
+
+:root[data-theme="dark"] .hero__social-link--github,
+:root[data-theme="dark"] .hero__social-link--github:hover {
+    color: rgb(248, 250, 252);
+}
+
+:root[data-theme="dark"] .hero__social-link--github:hover {
+    border-color: rgba(248, 250, 252, 0.36);
+}
+
+:root[data-theme="dark"] .hero__social-link--github:hover img {
+    filter: var(--svg-icon-filter);
+}
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+
+        --warm-glow-color: rgba(245, 158, 11, 0.18);
+        --warm-text-gradient: linear-gradient(
+            90deg,
+            rgb(254, 243, 199),
+            rgb(251, 191, 36),
+            rgb(253, 186, 116)
+        );
+        --page-top-glow: radial-gradient(circle at top, var(--warm-glow-color), transparent 34rem);
+        --page-surface-gradient: linear-gradient(180deg, rgb(2, 6, 23), rgb(15, 23, 42));
+        --warm-section-glow: radial-gradient(circle, var(--warm-glow-color), transparent 68%);
+        --svg-icon-filter: grayscale(1) brightness(0) invert(78%);
+        --svg-icon-opacity: 0.9;
+    }
+
+    :root:not([data-theme="light"]) body {
+        color: rgb(226, 232, 240);
+    }
+
+    :root:not([data-theme="light"]) .hero__avatar {
+        border-color: rgba(248, 250, 252, 0.36);
+        box-shadow:
+            0 28px 70px rgba(0, 0, 0, 0.46),
+            0 0 0 1px rgba(148, 163, 184, 0.22);
+    }
+
+    :root:not([data-theme="light"]) .hero__avatar-frame::before {
+        background:
+            radial-gradient(circle, rgba(245, 158, 11, 0.34), transparent 62%),
+            radial-gradient(circle at 35% 30%, rgba(248, 250, 252, 0.18), transparent 32%);
+    }
+
+    :root:not([data-theme="light"]) .hero__logo-pill,
+    :root:not([data-theme="light"]) .hero__links a,
+    :root:not([data-theme="light"]) .theme-toggle,
+    :root:not([data-theme="light"]) .latest-post-card__article,
+    :root:not([data-theme="light"]) .latest-posts__more-link,
+    :root:not([data-theme="light"]) .blog-index-card__article,
+    :root:not([data-theme="light"]) .empty-state,
+    :root:not([data-theme="light"]) .blog-post__body {
+        color: rgb(226, 232, 240);
+        background: rgba(15, 23, 42, 0.78);
+        border-color: rgba(148, 163, 184, 0.24);
+        box-shadow:
+            0 18px 48px rgba(0, 0, 0, 0.32),
+            inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    }
+
+    :root:not([data-theme="light"]) .latest-post-card__article:hover,
+    :root:not([data-theme="light"]) .latest-posts__more-link:hover,
+    :root:not([data-theme="light"]) .theme-toggle:hover,
+    :root:not([data-theme="light"]) .blog-index-card__article:hover {
+        border-color: rgba(245, 158, 11, 0.42);
+        box-shadow:
+            0 24px 64px rgba(0, 0, 0, 0.42),
+            inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    }
+
+    :root:not([data-theme="light"]) .hero__name,
+    :root:not([data-theme="light"]) .latest-post-card__title a,
+    :root:not([data-theme="light"]) .blog-index-card__title a,
+    :root:not([data-theme="light"]) .blog-post__body h2,
+    :root:not([data-theme="light"]) .blog-post__body h3,
+    :root:not([data-theme="light"]) .blog-post__body h4 {
+        color: rgb(248, 250, 252);
+    }
+
+    :root:not([data-theme="light"]) .hero__links a,
+    :root:not([data-theme="light"]) .theme-toggle,
+    :root:not([data-theme="light"]) .technology-marquee__item,
+    :root:not([data-theme="light"]) .latest-posts__intro,
+    :root:not([data-theme="light"]) .latest-post-card__summary,
+    :root:not([data-theme="light"]) .latest-posts__more-link,
+    :root:not([data-theme="light"]) .page-intro,
+    :root:not([data-theme="light"]) .blog-index-card__summary,
+    :root:not([data-theme="light"]) .empty-state,
+    :root:not([data-theme="light"]) .blog-post__summary,
+    :root:not([data-theme="light"]) .blog-post__body,
+    :root:not([data-theme="light"]) .blog-post__body blockquote,
+    :root:not([data-theme="light"]) .site-footer,
+    :root:not([data-theme="light"]) .site-footer__nav a,
+    :root:not([data-theme="light"]) .back-link {
+        color: rgb(203, 213, 225);
+    }
+
+    :root:not([data-theme="light"]) .latest-post-card__meta,
+    :root:not([data-theme="light"]) .blog-index-card__meta,
+    :root:not([data-theme="light"]) .blog-post__meta {
+        color: rgb(148, 163, 184);
+    }
+
+    :root:not([data-theme="light"]) .hero__line:first-child::after {
+        background: rgb(251, 191, 36);
+    }
+
+    :root:not([data-theme="light"]) .latest-post-card__title a:hover,
+    :root:not([data-theme="light"]) .blog-index-card__title a:hover,
+    :root:not([data-theme="light"]) .latest-posts__more-link:hover,
+    :root:not([data-theme="light"]) .blog-post__body a,
+    :root:not([data-theme="light"]) .back-link:hover,
+    :root:not([data-theme="light"]) .site-footer__nav a:hover {
+        color: rgb(251, 191, 36);
+    }
+
+    :root:not([data-theme="light"]) .blog-post__body a {
+        text-decoration-color: rgba(251, 191, 36, 0.42);
+    }
+
+    :root:not([data-theme="light"]) .blog-post__body a:hover {
+        text-decoration-color: rgba(251, 191, 36, 0.84);
+    }
+
+    :root:not([data-theme="light"]) .latest-post-card__tags li,
+    :root:not([data-theme="light"]) .blog-index-card__tags li,
+    :root:not([data-theme="light"]) .blog-post__tags li,
+    :root:not([data-theme="light"]) .blog-post__body code {
+        color: rgb(253, 230, 138);
+        background: rgba(120, 53, 15, 0.48);
+        border-color: rgba(245, 158, 11, 0.28);
+    }
+
+    :root:not([data-theme="light"]) .blog-post__body pre {
+        background: rgb(2, 6, 23);
+        border: 1px solid rgba(148, 163, 184, 0.22);
+    }
+
+    :root:not([data-theme="light"]) .blog-post__body pre code {
+        color: rgb(226, 232, 240);
+        background: transparent;
+        border: 0;
+    }
+
+    :root:not([data-theme="light"]) .blog-post__body blockquote {
+        border-left-color: rgba(245, 158, 11, 0.52);
+    }
+
+    :root:not([data-theme="light"]) .site-footer__inner {
+        border-top-color: rgba(148, 163, 184, 0.24);
+    }
+
+    :root:not([data-theme="light"]) .technology-marquee__icon {
+        opacity: var(--svg-icon-opacity);
+        filter: var(--svg-icon-filter);
+    }
+
+    :root:not([data-theme="light"]) .hero__social-link--linkedin:hover {
+        color: #0575b3;
+        border-color: rgba(5, 117, 179, 0.58);
+    }
+
+    :root:not([data-theme="light"]) .hero__social-link--github,
+    :root:not([data-theme="light"]) .hero__social-link--github:hover {
+        color: rgb(248, 250, 252);
+    }
+
+    :root:not([data-theme="light"]) .hero__social-link--github:hover {
+        border-color: rgba(248, 250, 252, 0.36);
+    }
+
+    :root:not([data-theme="light"]) .hero__social-link--github:hover img {
+        filter: var(--svg-icon-filter);
+    }
+}
+
 
 @media (max-width: 56rem) {
     .hero__logo-pill {

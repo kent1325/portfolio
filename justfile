@@ -18,6 +18,9 @@ smoke:
     test -f dist/index.html
     test -f dist/blog/index.html
     grep -q '<title>Kent Vugs Nielsen</title>' dist/index.html
+    grep -q '<meta name="color-scheme" content="light dark">' dist/index.html
+    grep -q '/assets/scripts/theme-toggle.js' dist/index.html
+    grep -q 'data-theme-toggle' dist/index.html
     grep -q '<meta name="description" content=' dist/index.html
     grep -q '<link rel="canonical" href="https://kvugs.github.io/">' dist/index.html
     grep -q '<meta property="og:type" content="website">' dist/index.html
@@ -52,12 +55,15 @@ smoke:
     test -f dist/assets/styles.css
     test -f dist/assets/images/social-preview.png
     test -f dist/assets/images/favicon.svg
+    grep -q "prefers-color-scheme: dark" dist/assets/styles.css
+    grep -q "data-theme=\\\"dark\\\"" dist/assets/styles.css
     grep -q "technology-marquee-scroll" dist/assets/styles.css
     test -f dist/assets/icons/python.svg
     test -f dist/assets/icons/fastapi.svg
     test -f dist/assets/icons/docker.svg
     grep -q "/assets/scripts/hero-lines.js" dist/index.html
     test -f dist/assets/scripts/hero-lines.js
+    test -f dist/assets/scripts/theme-toggle.js
     grep -q "/assets/icons/linkedin.svg" dist/index.html
     grep -q "/assets/icons/github.svg" dist/index.html
     test -f dist/assets/icons/linkedin.svg

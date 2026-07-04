@@ -1,6 +1,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <script>
+        (() => {
+            try {
+                const theme = localStorage.getItem("portfolio-theme");
+                if (theme === "dark" || theme === "light") {
+                    document.documentElement.dataset.theme = theme;
+                    document.documentElement.style.colorScheme = theme;
+                }
+            } catch {
+                // Ignore storage errors and fall back to the user's system preference.
+            }
+        })();
+    </script>
     <title>{{ page_title }}</title>
     <meta name="description" content="{{ page_description }}">
     <link rel="canonical" href="{{ page_url }}">
@@ -20,6 +34,7 @@
     <meta name="twitter:image:alt" content="{{ page_image_alt }}">
     <link rel="icon" href="/assets/images/favicon.svg" type="image/svg+xml">
     <link rel="stylesheet" href="/assets/styles.css">
+    <script src="/assets/scripts/theme-toggle.js" defer></script>
     {% if include_hero_script | default(false) %}
     <script src="/assets/scripts/hero-lines.js" defer></script>
     {% endif %}
