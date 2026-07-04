@@ -43,6 +43,8 @@ smoke:
     grep -q "latest-posts-heading" dist/index.html
     grep -q "latest-posts" dist/index.html
     grep -q "latest-post-card" dist/index.html
+    grep -q "bookshelf" dist/index.html
+    grep -q "/assets/books/designing-machine-learning-systems.jpg" dist/index.html
     grep -q "site-footer" dist/index.html
     grep -q "Built with Python" dist/index.html
     grep -q "/blog/data-science-in-esports/" dist/index.html
@@ -55,6 +57,7 @@ smoke:
     test -f dist/assets/styles.css
     test -f dist/assets/images/social-preview.png
     test -f dist/assets/images/favicon.svg
+    test -f dist/assets/books/designing-machine-learning-systems.jpg
     grep -q "prefers-color-scheme: dark" dist/assets/styles.css
     grep -q "data-theme=\\\"dark\\\"" dist/assets/styles.css
     grep -q "technology-marquee-scroll" dist/assets/styles.css

@@ -99,6 +99,41 @@
             </ul>
         </section>
         {% endif %}
+        {% if books is defined and books|length > 0 %}
+        <section class="bookshelf" aria-labelledby="bookshelf-heading">
+            <div class="bookshelf__header">
+                <h2 id="bookshelf-heading" class="bookshelf__title">Bookshelf</h2>
+                <p class="bookshelf__intro">
+                    Books shaping how I think about machine learning, systems, and engineering practice.
+                </p>
+            </div>
+            <ul class="bookshelf__list">
+                {% for book in books %}
+                <li class="bookshelf-card">
+                    <article class="bookshelf-card__article">
+                        <div class="bookshelf-card__cover-frame">
+                            <img src="{{ book.cover }}" alt="Cover of {{ book.title }}" class="bookshelf-card__cover" loading="lazy" decoding="async">
+                        </div>
+                        <div class="bookshelf-card__content">
+                            <p class="bookshelf-card__status">
+                                {{ "Currently reading" if book.status == "reading" else "Read" }}
+                            </p>
+                            <h3 class="bookshelf-card__title">{{ book.title }}</h3>
+                            <p class="bookshelf-card__author">{{ book.author }}</p>
+                            {% if book.tags %}
+                            <ul class="bookshelf-card__tags" aria-label="Tags for {{ book.title }}">
+                                {% for tag in book.tags %}
+                                <li>{{ tag }}</li>
+                                {% endfor %}
+                            </ul>
+                            {% endif %}
+                        </div>
+                    </article>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
     </main>
     <footer class="site-footer">
         <div class="site-footer__inner">

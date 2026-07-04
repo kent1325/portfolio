@@ -1,0 +1,35 @@
+- title: "Designing Machine Learning Systems"
+  author: "Chip Huyen"
+  status: "reading"
+  cover: "/assets/books/designing-machine-learning-systems.jpg"
+  tags:
+    - machine-learning
+    - system-design
+
+- title: "Hands-On Machine Learning with Scikit-Learn and PyTorch"
+  author: "Aurélien Géron"
+  status: "reading"
+  cover: "/assets/books/hands-on-machine-learning-with-scikit-learn-and-pytorch.jpg"
+  tags:
+    - machine-learning
+    - pytorch
+    - scikit-learn
+    - python
+
+- title: "Build a Large Language Model (From Scratch)"
+  author: "Sebastian Raschka"
+  status: "reading"
+  cover: "/assets/books/build-a-large-language-model-from-scratch.jpg"
+  tags:
+    - llm
+    - deep-learning
+    - fine-tuning
+
+- title: "Build a Reasoning Model (From Scratch)"
+  author: "Sebastian Raschka"
+  status: "reading"
+  cover: "/assets/books/build-a-reasoning-model-from-scratch.jpg"
+  tags:
+    - llm
+    - deep-learning
+    - reasoning-models

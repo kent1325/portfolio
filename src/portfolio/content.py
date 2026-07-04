@@ -193,6 +193,69 @@ class Technology(BaseModel):
         return self
 
 
+class Book(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    title: str
+    author: str
+    status: Literal["read", "reading"]
+    cover: str
+    tags: list[str] | None = None
+
+    @field_validator("title")
+    @classmethod
+    def title_must_be_valid(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("title must not be empty")
+        return value
+
+    @field_validator("author")
+    @classmethod
+    def author_must_be_valid(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("author must not be empty")
+        return value
+
+    @field_validator("status")
+    @classmethod
+    def status_must_be_valid(cls, value: str) -> str:
+        status = value.strip()
+        if not status:
+            raise ValueError("status cannot be empty")
+        if status not in ["read", "reading"]:
+            raise ValueError(f"status must be set to 'read' or 'reading', but got '{status}'")
+
+        return status
+
+    @field_validator("tags")
+    @classmethod
+    def tags_must_be_valid(cls, value: list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        tags = [tag.strip() for tag in value]
+        for tag in tags:
+            if not SLUG_PATTERN.fullmatch(tag):
+                raise ValueError(f"tag must be lowercase kebab-case, but got '{tag}'")
+
+        return tags
+
+    @field_validator("cover")
+    @classmethod
+    def cover_must_be_valid(cls, value: str) -> str:
+        value = value.strip()
+        if not value.startswith("/assets/"):
+            raise ValueError(f"cover must start with /assets/, but got '{value}'")
+        if ".." in value:
+            raise ValueError("cover must not contain '..'")
+        if not value.endswith((".png", ".webp", ".jpeg", ".jpg")):
+            raise ValueError(
+                f"cover must be an image (.png, .webp, .jpeg, .jpg), but got '{value}'"
+            )
+        return value
+
+
 def load_profile(root_path: Path) -> Profile:
     yaml_file_path: Path = root_path / "content" / "profile.yaml"
     raw_profile: dict[str, Any]
@@ -348,3 +411,35 @@ def _raise_if_duplicates_exist(items: list[str]) -> None:
 
     if duplicates:
         raise ValueError(f"Duplicate value(s) found: {duplicates}")
+
+
+def load_books(root_path: Path) -> list[Book]:
+    yaml_file_path: Path = root_path / "content" / "books.yaml"
+    if not yaml_file_path.is_file():
+        return []
+
+    with yaml_file_path.open("r", encoding="utf-8") as f:
+        raw_books = yaml.safe_load(f)
+
+    if raw_books is None:
+        return []
+
+    if not isinstance(raw_books, list):
+        raise ValueError(f"YAML root must be a list: {yaml_file_path}")
+
+    books: list[Book] = []
+    for raw_book in raw_books:
+        if not isinstance(raw_book, dict):
+            raise ValueError(f"Every book entry must be a mapping/object: {yaml_file_path}")
+        book = Book.model_validate(raw_book)
+        _validate_book_cover_exists(root_path, book.cover)
+        books.append(book)
+    return books
+
+
+def _validate_book_cover_exists(root_path: Path, book_cover_path: str) -> None:
+    path: Path = root_path / book_cover_path.removeprefix("/")
+    if not path.is_file():
+        raise FileNotFoundError(
+            f"Book cover file not found: '{path}' from set path: '{book_cover_path}'"
+        )
