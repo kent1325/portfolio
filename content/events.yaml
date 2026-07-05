@@ -1,0 +1,9 @@
+- name: "PyDay 2025"
+  role: "attendee"
+  date: "2025-11-29"
+  location: "Barcelona"
+  tags:
+    - python
+    - workshops
+  links:
+    pdf: "/assets/events/pyday.pdf"

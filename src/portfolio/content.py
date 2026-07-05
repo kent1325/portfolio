@@ -1,3 +1,4 @@
+from calendar import monthrange
 from datetime import date
 from operator import attrgetter
 from pathlib import Path
@@ -8,6 +9,7 @@ import yaml
 from pydantic import BaseModel, ConfigDict, field_validator, model_validator
 
 SLUG_PATTERN = compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
+PARTIAL_DATE_PATTERN = compile(r"^\d{4}(?:-\d{2}(?:-\d{2})?)?$")
 HERO_LOGOS_LIMIT = 4
 
 
@@ -256,6 +258,99 @@ class Book(BaseModel):
         return value
 
 
+class EventLinks(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    homepage: str | None = None
+    pdf: str | None = None
+
+    @field_validator("homepage")
+    @classmethod
+    def homepage_must_be_public_url(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        if not value.startswith(("http://", "https://")):
+            raise ValueError(f"homepage must start with http:// or https://, but got '{value}'")
+        return value
+
+    @field_validator("pdf")
+    @classmethod
+    def pdf_must_be_valid_local_pdf_asset(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        if not value.startswith("/assets/"):
+            raise ValueError(f"pdf must start with /assets/, but got '{value}'")
+        if ".." in value:
+            raise ValueError("pdf must not contain '..'")
+        if not value.endswith(".pdf"):
+            raise ValueError(f"pdf must be a PDF asset, but got '{value}'")
+        return value
+
+
+class EventParticipation(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str
+    role: Literal["attendee", "speaker", "organizer", "volunteer"]
+    date: str
+    location: str | None = None
+    tags: list[str] | None = None
+    links: EventLinks | None = None
+
+    @field_validator("name")
+    @classmethod
+    def name_must_be_valid(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("name must not be empty")
+        return value
+
+    @field_validator("role", mode="before")
+    @classmethod
+    def role_must_be_clean(cls, value: str) -> str:
+        if not isinstance(value, str):
+            raise ValueError("role must be text")
+        return value.strip()
+
+    @field_validator("date", mode="before")
+    @classmethod
+    def date_must_be_valid_partial_date(cls, value: Any) -> str:
+        if isinstance(value, date):
+            value = value.isoformat()
+        if not isinstance(value, str):
+            raise ValueError("date must be text")
+        value = value.strip()
+        _partial_date_sort_key(value)
+        return value
+
+    @field_validator("location")
+    @classmethod
+    def location_must_be_valid(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        if not value:
+            raise ValueError("location must not be empty when set")
+        return value
+
+    @field_validator("tags")
+    @classmethod
+    def tags_must_be_valid(cls, value: list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        tags = [tag.strip() for tag in value]
+        for tag in tags:
+            if not SLUG_PATTERN.fullmatch(tag):
+                raise ValueError(f"tag must be lowercase kebab-case, but got '{tag}'")
+        return tags
+
+    @property
+    def role_label(self) -> str:
+        return self.role.capitalize()
+
+
 def load_profile(root_path: Path) -> Profile:
     yaml_file_path: Path = root_path / "content" / "profile.yaml"
     raw_profile: dict[str, Any]
@@ -443,3 +538,57 @@ def _validate_book_cover_exists(root_path: Path, book_cover_path: str) -> None:
         raise FileNotFoundError(
             f"Book cover file not found: '{path}' from set path: '{book_cover_path}'"
         )
+
+
+def load_events(root_path: Path) -> list[EventParticipation]:
+    yaml_file_path: Path = root_path / "content" / "events.yaml"
+    if not yaml_file_path.is_file():
+        return []
+
+    with yaml_file_path.open("r", encoding="utf-8") as f:
+        raw_events = yaml.safe_load(f)
+
+    if raw_events is None:
+        return []
+
+    if not isinstance(raw_events, list):
+        raise ValueError(f"YAML root must be a list: {yaml_file_path}")
+
+    events: list[EventParticipation] = []
+    for raw_event in raw_events:
+        if not isinstance(raw_event, dict):
+            raise ValueError(f"Every event entry must be a mapping/object: {yaml_file_path}")
+        event = EventParticipation.model_validate(raw_event)
+        if event.links is not None and event.links.pdf is not None:
+            _validate_event_pdf_exists(root_path, event.links.pdf)
+        events.append(event)
+    events.sort(key=lambda event: _partial_date_sort_key(event.date), reverse=True)
+    return events
+
+
+def _validate_event_pdf_exists(root_path: Path, event_pdf_path: str) -> None:
+    path: Path = root_path / event_pdf_path.removeprefix("/")
+    if not path.is_file():
+        raise FileNotFoundError(
+            f"Event PDF file not found: '{path}' from set path: '{event_pdf_path}'"
+        )
+
+
+def _partial_date_sort_key(value: str) -> date:
+    if not PARTIAL_DATE_PATTERN.fullmatch(value):
+        raise ValueError(f"date must be YYYY, YYYY-MM, or YYYY-MM-DD, but got '{value}'")
+
+    parts = value.split("-")
+    year = int(parts[0])
+    try:
+        if len(parts) == 1:
+            return date(year, 12, 31)
+
+        month = int(parts[1])
+        if len(parts) == 2:
+            return date(year, month, monthrange(year, month)[1])
+
+        day = int(parts[2])
+        return date(year, month, day)
+    except ValueError as exc:
+        raise ValueError(f"date must be YYYY, YYYY-MM, or YYYY-MM-DD, but got '{value}'") from exc

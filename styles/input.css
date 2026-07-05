@@ -756,6 +756,169 @@ img[src$=".svg"] {
     border-radius: 9999px;
 }
 
+.events {
+    position: relative;
+    isolation: isolate;
+    padding-block: clamp(4.5rem, 9vw, 7rem);
+}
+
+.events::before {
+    position: absolute;
+    inset: 8% auto auto 50%;
+    z-index: -1;
+    width: min(34rem, 78vw);
+    height: min(34rem, 78vw);
+    content: "";
+    background: var(--warm-section-glow);
+    transform: translateX(-50%);
+    pointer-events: none;
+}
+
+.events__header {
+    max-width: 42rem;
+    margin-inline: auto;
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+    text-align: center;
+}
+
+.events__title {
+    margin: 0;
+    padding-bottom: 0.08em;
+    color: transparent;
+    background: var(--warm-text-gradient);
+    background-clip: text;
+    -webkit-background-clip: text;
+    font-size: clamp(2.25rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.055em;
+}
+
+.events__intro {
+    max-width: 34rem;
+    margin: 1rem auto 0;
+    color: rgb(71, 85, 105);
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.events__list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: 1.25rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.event-card {
+    min-width: 0;
+}
+
+.event-card__article {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    height: 100%;
+    min-height: 14rem;
+    padding: clamp(1.25rem, 3vw, 1.75rem);
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.78);
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 1.5rem;
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.08);
+    backdrop-filter: blur(14px) saturate(1.15);
+    transition:
+        border-color 180ms ease,
+        box-shadow 180ms ease,
+        transform 180ms ease;
+}
+
+.event-card__article::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 0.25rem;
+    content: "";
+    background: linear-gradient(90deg, rgb(217, 119, 6), rgb(245, 158, 11));
+    opacity: 0.8;
+}
+
+.event-card__article--clickable {
+    cursor: pointer;
+}
+
+.event-card__article:hover {
+    border-color: rgba(217, 119, 6, 0.34);
+    box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
+    transform: translateY(-0.2rem);
+}
+
+.event-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    color: rgb(100, 116, 139);
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.event-card__title {
+    margin: 0;
+    color: rgb(15, 23, 42);
+    font-size: clamp(1.35rem, 2.5vw, 1.85rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+}
+
+.event-card__location {
+    margin: -0.25rem 0 0;
+    color: rgb(71, 85, 105);
+    line-height: 1.55;
+}
+
+.event-card__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.event-card__tags li {
+    padding: 0.35rem 0.6rem;
+    color: rgb(120, 53, 15);
+    font-size: 0.78rem;
+    font-weight: 700;
+    line-height: 1;
+    background: rgba(254, 243, 199, 0.82);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 9999px;
+}
+
+.event-card__action {
+    display: inline-flex;
+    align-items: center;
+    align-self: flex-start;
+    gap: 0.45rem;
+    margin-top: auto;
+    color: rgb(180, 83, 9);
+    font-weight: 800;
+    text-decoration: none;
+    transition:
+        color 180ms ease,
+        transform 180ms ease;
+}
+
+.event-card__article--clickable:hover .event-card__action,
+.event-card__action:hover {
+    color: rgb(146, 64, 14);
+    transform: translateX(0.12rem);
+}
+
 .page-shell {
     position: relative;
     isolation: isolate;
@@ -1136,6 +1299,7 @@ img[src$=".svg"] {
 :root[data-theme="dark"] .latest-post-card__article,
 :root[data-theme="dark"] .latest-posts__more-link,
 :root[data-theme="dark"] .bookshelf-card__article,
+:root[data-theme="dark"] .event-card__article,
 :root[data-theme="dark"] .blog-index-card__article,
 :root[data-theme="dark"] .empty-state,
 :root[data-theme="dark"] .blog-post__body {
@@ -1150,6 +1314,7 @@ img[src$=".svg"] {
 :root[data-theme="dark"] .latest-post-card__article:hover,
 :root[data-theme="dark"] .latest-posts__more-link:hover,
 :root[data-theme="dark"] .bookshelf-card__article:hover,
+:root[data-theme="dark"] .event-card__article:hover,
 :root[data-theme="dark"] .theme-toggle:hover,
 :root[data-theme="dark"] .blog-index-card__article:hover {
     border-color: rgba(245, 158, 11, 0.42);
@@ -1161,6 +1326,7 @@ img[src$=".svg"] {
 :root[data-theme="dark"] .hero__name,
 :root[data-theme="dark"] .latest-post-card__title a,
 :root[data-theme="dark"] .bookshelf-card__title,
+:root[data-theme="dark"] .event-card__title,
 :root[data-theme="dark"] .blog-index-card__title a,
 :root[data-theme="dark"] .blog-post__body h2,
 :root[data-theme="dark"] .blog-post__body h3,
@@ -1176,6 +1342,8 @@ img[src$=".svg"] {
 :root[data-theme="dark"] .latest-posts__more-link,
 :root[data-theme="dark"] .bookshelf__intro,
 :root[data-theme="dark"] .bookshelf-card__author,
+:root[data-theme="dark"] .events__intro,
+:root[data-theme="dark"] .event-card__location,
 :root[data-theme="dark"] .page-intro,
 :root[data-theme="dark"] .blog-index-card__summary,
 :root[data-theme="dark"] .empty-state,
@@ -1189,6 +1357,7 @@ img[src$=".svg"] {
 }
 
 :root[data-theme="dark"] .latest-post-card__meta,
+:root[data-theme="dark"] .event-card__meta,
 :root[data-theme="dark"] .blog-index-card__meta,
 :root[data-theme="dark"] .blog-post__meta {
     color: rgb(148, 163, 184);
@@ -1218,6 +1387,7 @@ img[src$=".svg"] {
 :root[data-theme="dark"] .latest-post-card__tags li,
 :root[data-theme="dark"] .bookshelf-card__status,
 :root[data-theme="dark"] .bookshelf-card__tags li,
+:root[data-theme="dark"] .event-card__tags li,
 :root[data-theme="dark"] .blog-index-card__tags li,
 :root[data-theme="dark"] .blog-post__tags li,
 :root[data-theme="dark"] .blog-post__body code {
@@ -1254,6 +1424,15 @@ img[src$=".svg"] {
 :root[data-theme="dark"] .technology-marquee__icon {
     opacity: var(--svg-icon-opacity);
     filter: var(--svg-icon-filter);
+}
+
+:root[data-theme="dark"] .event-card__action {
+    color: rgb(251, 191, 36);
+}
+
+:root[data-theme="dark"] .event-card__article--clickable:hover .event-card__action,
+:root[data-theme="dark"] .event-card__action:hover {
+    color: rgb(253, 186, 116);
 }
 
 :root[data-theme="dark"] .hero__social-link--linkedin:hover {
@@ -1314,6 +1493,7 @@ img[src$=".svg"] {
     :root:not([data-theme="light"]) .latest-post-card__article,
     :root:not([data-theme="light"]) .latest-posts__more-link,
     :root:not([data-theme="light"]) .bookshelf-card__article,
+    :root:not([data-theme="light"]) .event-card__article,
     :root:not([data-theme="light"]) .blog-index-card__article,
     :root:not([data-theme="light"]) .empty-state,
     :root:not([data-theme="light"]) .blog-post__body {
@@ -1328,6 +1508,7 @@ img[src$=".svg"] {
     :root:not([data-theme="light"]) .latest-post-card__article:hover,
     :root:not([data-theme="light"]) .latest-posts__more-link:hover,
     :root:not([data-theme="light"]) .bookshelf-card__article:hover,
+    :root:not([data-theme="light"]) .event-card__article:hover,
     :root:not([data-theme="light"]) .theme-toggle:hover,
     :root:not([data-theme="light"]) .blog-index-card__article:hover {
         border-color: rgba(245, 158, 11, 0.42);
@@ -1339,6 +1520,7 @@ img[src$=".svg"] {
     :root:not([data-theme="light"]) .hero__name,
     :root:not([data-theme="light"]) .latest-post-card__title a,
     :root:not([data-theme="light"]) .bookshelf-card__title,
+    :root:not([data-theme="light"]) .event-card__title,
     :root:not([data-theme="light"]) .blog-index-card__title a,
     :root:not([data-theme="light"]) .blog-post__body h2,
     :root:not([data-theme="light"]) .blog-post__body h3,
@@ -1354,6 +1536,8 @@ img[src$=".svg"] {
     :root:not([data-theme="light"]) .latest-posts__more-link,
     :root:not([data-theme="light"]) .bookshelf__intro,
     :root:not([data-theme="light"]) .bookshelf-card__author,
+    :root:not([data-theme="light"]) .events__intro,
+    :root:not([data-theme="light"]) .event-card__location,
     :root:not([data-theme="light"]) .page-intro,
     :root:not([data-theme="light"]) .blog-index-card__summary,
     :root:not([data-theme="light"]) .empty-state,
@@ -1367,6 +1551,7 @@ img[src$=".svg"] {
     }
 
     :root:not([data-theme="light"]) .latest-post-card__meta,
+    :root:not([data-theme="light"]) .event-card__meta,
     :root:not([data-theme="light"]) .blog-index-card__meta,
     :root:not([data-theme="light"]) .blog-post__meta {
         color: rgb(148, 163, 184);
@@ -1396,6 +1581,7 @@ img[src$=".svg"] {
     :root:not([data-theme="light"]) .latest-post-card__tags li,
     :root:not([data-theme="light"]) .bookshelf-card__status,
     :root:not([data-theme="light"]) .bookshelf-card__tags li,
+    :root:not([data-theme="light"]) .event-card__tags li,
     :root:not([data-theme="light"]) .blog-index-card__tags li,
     :root:not([data-theme="light"]) .blog-post__tags li,
     :root:not([data-theme="light"]) .blog-post__body code {
@@ -1432,6 +1618,15 @@ img[src$=".svg"] {
     :root:not([data-theme="light"]) .technology-marquee__icon {
         opacity: var(--svg-icon-opacity);
         filter: var(--svg-icon-filter);
+    }
+
+    :root:not([data-theme="light"]) .event-card__action {
+        color: rgb(251, 191, 36);
+    }
+
+    :root:not([data-theme="light"]) .event-card__article--clickable:hover .event-card__action,
+    :root:not([data-theme="light"]) .event-card__action:hover {
+        color: rgb(253, 186, 116);
     }
 
     :root:not([data-theme="light"]) .hero__social-link--linkedin:hover {
@@ -1536,12 +1731,14 @@ img[src$=".svg"] {
     }
 
     .latest-posts,
-    .bookshelf {
+    .bookshelf,
+    .events {
         padding-block: clamp(3.5rem, 12vw, 5rem);
     }
 
     .latest-posts__header,
-    .bookshelf__header {
+    .bookshelf__header,
+    .events__header {
         margin-bottom: 2rem;
     }
 
@@ -1550,8 +1747,14 @@ img[src$=".svg"] {
         gap: 0.75rem;
     }
 
+    .events__list {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
     .latest-post-card__article,
-    .bookshelf-card__article {
+    .bookshelf-card__article,
+    .event-card__article {
         border-radius: 1.25rem;
     }
 

@@ -6,10 +6,12 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 from .content import (
     BlogPost,
     Book,
+    EventParticipation,
     Technology,
     get_hero_logo_technologies,
     load_blog_posts,
     load_books,
+    load_events,
     load_profile,
     load_technologies,
 )
@@ -85,6 +87,7 @@ def build_site() -> None:
     latest_posts: list[BlogPost] = blog_posts[:4]
     hero_logo_technologies: list[Technology] = get_hero_logo_technologies(profile, technologies)
     books: list[Book] = load_books(ROOT_PATH)
+    events: list[EventParticipation] = load_events(ROOT_PATH)
     site_name = profile.name
     home_description = (
         f"{site_name}'s portfolio with writing and projects focused on data science, "
@@ -102,6 +105,7 @@ def build_site() -> None:
         latest_posts=latest_posts,
         hero_logo_technologies=hero_logo_technologies,
         books=books,
+        events=events,
         site_name=site_name,
         page_title=site_name,
         page_description=home_description,

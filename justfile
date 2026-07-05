@@ -45,6 +45,9 @@ smoke:
     grep -q "latest-post-card" dist/index.html
     grep -q "bookshelf" dist/index.html
     grep -q "/assets/books/designing-machine-learning-systems.jpg" dist/index.html
+    grep -q "events" dist/index.html
+    grep -q "/assets/events/pyday.pdf" dist/index.html
+    test -f dist/assets/events/pyday.pdf
     grep -q "site-footer" dist/index.html
     grep -q "Built with Python" dist/index.html
     grep -q "/blog/data-science-in-esports/" dist/index.html

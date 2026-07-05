@@ -134,6 +134,53 @@
             </ul>
         </section>
         {% endif %}
+        {% if events is defined and events|length > 0 %}
+        <section class="events" aria-labelledby="events-heading">
+            <div class="events__header">
+                <h2 id="events-heading" class="events__title">Events</h2>
+                <p class="events__intro">
+                    Technical gatherings and community events I have taken part in.
+                </p>
+            </div>
+            <ul class="events__list">
+                {% for event in events %}
+                <li class="event-card">
+                    {% if event.links and event.links.pdf %}
+                    <a href="{{ event.links.pdf }}" class="event-card__article event-card__article--clickable" target="_blank" rel="noopener" aria-label="Open participation certificate for {{ event.name }}">
+                    {% else %}
+                    <article class="event-card__article">
+                    {% endif %}
+                        <div class="event-card__meta">
+                            <span>{{ event.role_label }}</span>
+                            <span aria-hidden="true">·</span>
+                            <time datetime="{{ event.date }}">{{ event.date }}</time>
+                        </div>
+                        <h3 class="event-card__title">{{ event.name }}</h3>
+                        {% if event.location %}
+                        <p class="event-card__location">{{ event.location }}</p>
+                        {% endif %}
+                        {% if event.tags %}
+                        <ul class="event-card__tags" aria-label="Tags for {{ event.name }}">
+                            {% for tag in event.tags %}
+                            <li>{{ tag }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        {% if event.links and event.links.pdf %}
+                        <span class="event-card__action">View certificate <span aria-hidden="true">↗</span></span>
+                        {% elif event.links and event.links.homepage %}
+                        <a href="{{ event.links.homepage }}" class="event-card__action" target="_blank" rel="noopener">Event homepage <span aria-hidden="true">↗</span></a>
+                        {% endif %}
+                    {% if event.links and event.links.pdf %}
+                    </a>
+                    {% else %}
+                    </article>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
     </main>
     <footer class="site-footer">
         <div class="site-footer__inner">
