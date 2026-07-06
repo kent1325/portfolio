@@ -99,6 +99,55 @@
             </ul>
         </section>
         {% endif %}
+        {% if papers is defined and papers|length > 0 %}
+        <section class="papers" aria-labelledby="papers-heading">
+            <div class="papers__header">
+                <h2 id="papers-heading" class="papers__title">Papers</h2>
+                <p class="papers__intro">
+                    Formal research and university work with downloadable artifacts.
+                </p>
+            </div>
+            <ul class="papers__list">
+                {% for paper in papers %}
+                <li class="paper-card">
+                    <article class="paper-card__article">
+                        <div class="paper-card__meta">
+                            <time datetime="{{ paper.year }}">{{ paper.year }}</time>
+                            {% if paper.type %}
+                            <span aria-hidden="true">·</span>
+                            <span>{{ paper.type }}</span>
+                            {% endif %}
+                            {% if paper.institution %}
+                            <span aria-hidden="true">·</span>
+                            <span>{{ paper.institution }}</span>
+                            {% endif %}
+                        </div>
+                        <h3 class="paper-card__title">{{ paper.title }}</h3>
+                        <p class="paper-card__summary">{{ paper.summary }}</p>
+                        {% if paper.tags %}
+                        <ul class="paper-card__tags" aria-label="Tags for {{ paper.title }}">
+                            {% for tag in paper.tags %}
+                            <li>{{ tag }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                        <div class="paper-card__links" aria-label="Links for {{ paper.title }}">
+                            {% if paper.links.pdf %}
+                            <a href="{{ paper.links.pdf }}" target="_blank" rel="noopener">Read PDF <span aria-hidden="true">↗</span></a>
+                            {% endif %}
+                            {% if paper.links.external %}
+                            <a href="{{ paper.links.external }}" target="_blank" rel="noopener">Paper page <span aria-hidden="true">↗</span></a>
+                            {% endif %}
+                            {% if paper.links.github %}
+                            <a href="{{ paper.links.github }}" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+                            {% endif %}
+                        </div>
+                    </article>
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
         {% if books is defined and books|length > 0 %}
         <section class="bookshelf" aria-labelledby="bookshelf-heading">
             <div class="bookshelf__header">

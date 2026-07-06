@@ -258,6 +258,124 @@ class Book(BaseModel):
         return value
 
 
+class PaperLinks(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    pdf: str | None = None
+    external: str | None = None
+    github: str | None = None
+
+    @field_validator("pdf")
+    @classmethod
+    def pdf_must_be_valid_local_pdf_asset(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        if not value.startswith("/assets/"):
+            raise ValueError(f"pdf must start with /assets/, but got '{value}'")
+        if ".." in value:
+            raise ValueError("pdf must not contain '..'")
+        if not value.endswith(".pdf"):
+            raise ValueError(f"pdf must be a PDF asset, but got '{value}'")
+        return value
+
+    @field_validator("external")
+    @classmethod
+    def external_must_be_public_url(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        if not value.startswith(("http://", "https://")):
+            raise ValueError(f"external must start with http:// or https://, but got '{value}'")
+        return value
+
+    @field_validator("github")
+    @classmethod
+    def github_must_be_github_url(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        if not value.startswith("https://github.com/"):
+            raise ValueError(f"github must start with https://github.com/, but got '{value}'")
+        return value
+
+
+class Paper(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    title: str
+    year: int
+    summary: str
+    type: str | None = None
+    institution: str | None = None
+    tags: list[str] | None = None
+    links: PaperLinks
+
+    @field_validator("title")
+    @classmethod
+    def title_must_be_valid(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("title must not be empty")
+        return value
+
+    @field_validator("year", mode="before")
+    @classmethod
+    def year_must_be_valid(cls, value: Any) -> int:
+        if isinstance(value, bool):
+            raise ValueError("year must be a four-digit year")
+        if isinstance(value, str):
+            value = value.strip()
+            if not value.isdigit():
+                raise ValueError("year must be a four-digit year")
+            year = int(value)
+        elif isinstance(value, int):
+            year = value
+        else:
+            raise ValueError("year must be a four-digit year")
+
+        if year < 1000 or year > 9999:
+            raise ValueError("year must be a four-digit year")
+        return year
+
+    @field_validator("summary")
+    @classmethod
+    def summary_must_be_valid(cls, value: str) -> str:
+        value = value.strip()
+        if not value:
+            raise ValueError("summary must not be empty")
+        return value
+
+    @field_validator("type", "institution")
+    @classmethod
+    def optional_text_must_be_valid(cls, value: str | None) -> str | None:
+        if value is None:
+            return None
+        value = value.strip()
+        if not value:
+            raise ValueError("optional text fields must not be empty when set")
+        return value
+
+    @field_validator("tags")
+    @classmethod
+    def tags_must_be_valid(cls, value: list[str] | None) -> list[str] | None:
+        if value is None:
+            return None
+        tags = [tag.strip() for tag in value]
+        for tag in tags:
+            if not SLUG_PATTERN.fullmatch(tag):
+                raise ValueError(f"tag must be lowercase kebab-case, but got '{tag}'")
+        return tags
+
+    @model_validator(mode="after")
+    def paper_must_have_artifact_link(self) -> Paper:
+        if self.links.pdf is None and self.links.external is None:
+            raise ValueError(
+                "paper must include at least one artifact link: links.pdf or links.external"
+            )
+        return self
+
+
 class EventLinks(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
@@ -506,6 +624,40 @@ def _raise_if_duplicates_exist(items: list[str]) -> None:
 
     if duplicates:
         raise ValueError(f"Duplicate value(s) found: {duplicates}")
+
+
+def load_papers(root_path: Path) -> list[Paper]:
+    yaml_file_path: Path = root_path / "content" / "papers.yaml"
+    if not yaml_file_path.is_file():
+        return []
+
+    with yaml_file_path.open("r", encoding="utf-8") as f:
+        raw_papers = yaml.safe_load(f)
+
+    if raw_papers is None:
+        return []
+
+    if not isinstance(raw_papers, list):
+        raise ValueError(f"YAML root must be a list: {yaml_file_path}")
+
+    papers: list[Paper] = []
+    for raw_paper in raw_papers:
+        if not isinstance(raw_paper, dict):
+            raise ValueError(f"Every paper entry must be a mapping/object: {yaml_file_path}")
+        paper = Paper.model_validate(raw_paper)
+        if paper.links.pdf is not None:
+            _validate_paper_pdf_exists(root_path, paper.links.pdf)
+        papers.append(paper)
+    papers.sort(key=attrgetter("year"), reverse=True)
+    return papers
+
+
+def _validate_paper_pdf_exists(root_path: Path, paper_pdf_path: str) -> None:
+    path: Path = root_path / paper_pdf_path.removeprefix("/")
+    if not path.is_file():
+        raise FileNotFoundError(
+            f"Paper PDF file not found: '{path}' from set path: '{paper_pdf_path}'"
+        )
 
 
 def load_books(root_path: Path) -> list[Book]:

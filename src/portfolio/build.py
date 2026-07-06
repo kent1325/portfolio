@@ -7,11 +7,13 @@ from .content import (
     BlogPost,
     Book,
     EventParticipation,
+    Paper,
     Technology,
     get_hero_logo_technologies,
     load_blog_posts,
     load_books,
     load_events,
+    load_papers,
     load_profile,
     load_technologies,
 )
@@ -86,6 +88,7 @@ def build_site() -> None:
     technologies: list[Technology] = load_technologies(ROOT_PATH)
     latest_posts: list[BlogPost] = blog_posts[:4]
     hero_logo_technologies: list[Technology] = get_hero_logo_technologies(profile, technologies)
+    papers: list[Paper] = load_papers(ROOT_PATH)
     books: list[Book] = load_books(ROOT_PATH)
     events: list[EventParticipation] = load_events(ROOT_PATH)
     site_name = profile.name
@@ -104,6 +107,7 @@ def build_site() -> None:
         technologies=technologies,
         latest_posts=latest_posts,
         hero_logo_technologies=hero_logo_technologies,
+        papers=papers,
         books=books,
         events=events,
         site_name=site_name,

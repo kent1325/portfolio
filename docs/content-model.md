@@ -229,8 +229,9 @@ Rules:
 
 - `links.pdf` must be a local asset reference.
 - `links.external` must be an `http://` or `https://` URL and should point to a formal paper page.
-- `links.github` may support the paper but does not satisfy the artifact requirement.
+- `links.github` must start with `https://github.com/`, may support the paper, and does not satisfy the artifact requirement.
 - Papers are shown on the homepage in v1.
+- Papers are sorted by `year` descending, preserving source order for papers with the same year.
 - No separate `/papers/` archive page in v1.
 
 ## Bookshelf

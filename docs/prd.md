@@ -146,6 +146,8 @@ Optional supporting code links are allowed but do not satisfy the artifact requi
 
 Informal research experiments, notebooks, and implementation reports belong in blog posts/project writeups.
 
+All papers are shown on the homepage and sorted by year descending, preserving source order for papers with the same year.
+
 No dedicated papers archive page in v1.
 
 ### Bookshelf

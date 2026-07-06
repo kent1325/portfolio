@@ -77,6 +77,7 @@ Fixed relative order, with empty content sections hidden:
 - Formal academic/research papers only
 - Each paper requires at least one paper artifact: local PDF or formal external page
 - Code links are optional supporting links only
+- All papers shown on homepage, sorted by year descending
 - Homepage-only section; no `/papers/` page
 
 ### Bookshelf

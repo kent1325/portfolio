@@ -241,7 +241,7 @@ Validate:
 
 - `links.pdf` is a valid local asset reference
 - `links.external` is an `http://` or `https://` URL
-- optional `links.github` is an `http://` or `https://` URL
+- optional `links.github` starts with `https://github.com/`
 - code links do not satisfy the paper artifact requirement
 
 ### Books validation

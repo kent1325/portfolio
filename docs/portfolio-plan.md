@@ -245,6 +245,7 @@ The papers section is for formal academic or research documents only.
 - A paper artifact is either a public local PDF or a formal external paper page.
 - GitHub/code links may support a paper but do not replace the paper artifact.
 - Informal experiments, notebooks, and implementation reports belong in blog posts/project writeups.
+- Papers are sorted by year descending, preserving source order for papers with the same year.
 - No dedicated papers archive page in v1.
 
 ## Bookshelf
