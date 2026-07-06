@@ -58,7 +58,7 @@ Reasoning:
 - The planned moving parts are presentational: hero typewriter/carousel text, a continuous technology marquee, and subtle pulsing/floating hero technology logos.
 - The marquee and hero logo motion are better expressed as CSS animations than framework state.
 - The hero typewriter has timing/state, but it is isolated enough for a tiny local script that progressively enhances pre-rendered HTML.
-- Alpine.js is a reasonable later option if the site grows user-driven interactions such as filters, tabs, modals, a navigation drawer, or a manual theme toggle.
+- Alpine.js is a reasonable later option if the site grows richer user-driven interactions such as filters, tabs, modals, or a navigation drawer.
 - Alpine AJAX and HTMX are not useful in v1 because the site is statically hosted on GitHub Pages and has no backend endpoints for server-rendered fragments.
 - Avoiding a frontend framework keeps the technical story centered on the Python compiler, strict content validation, and static deployment pipeline.
 
@@ -311,17 +311,17 @@ Avoid in v1:
 - Canvas/WebGL backgrounds
 - Overly experimental interactions
 
-Reduced-motion behavior is not supported in v1. Reconsider only if accessibility requirements become a priority later.
+Reduced-motion behavior is supported in v1 for decorative animation: stop the hero/typewriter motion, stop the marquee loop, hide duplicated marquee content, and minimize animated hover movement.
 
 ## Dark Mode
 
-Support dark mode from v1 using system preference.
+Support dark mode from v1 using system preference plus a small manual theme override.
 
 Implementation:
 
-- Tailwind `darkMode: "media"`
-- Use `dark:` classes in templates
-- No manual theme toggle in v1
+- Use CSS custom properties and explicit dark selectors for source-controlled styling
+- Apply system preference by default
+- Use a tiny local script and `localStorage` only for the manual override
 
 ## Footer
 

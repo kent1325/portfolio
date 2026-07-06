@@ -36,6 +36,7 @@ def _get_project_root() -> Path:
 ROOT_PATH = _get_project_root()
 SITE_URL = "https://kvugs.github.io"
 SOCIAL_IMAGE_PATH = "/assets/images/social-preview.png"
+LATEST_POSTS_LIMIT = 5
 
 
 def _page_url(path: str) -> str:
@@ -86,7 +87,7 @@ def build_site() -> None:
 
     blog_posts: list[BlogPost] = load_blog_posts(ROOT_PATH)
     technologies: list[Technology] = load_technologies(ROOT_PATH)
-    latest_posts: list[BlogPost] = blog_posts[:4]
+    latest_posts: list[BlogPost] = blog_posts[:LATEST_POSTS_LIMIT]
     hero_logo_technologies: list[Technology] = get_hero_logo_technologies(profile, technologies)
     papers: list[Paper] = load_papers(ROOT_PATH)
     books: list[Book] = load_books(ROOT_PATH)

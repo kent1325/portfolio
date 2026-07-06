@@ -13,6 +13,8 @@
     --page-top-glow: radial-gradient(circle at top, var(--warm-glow-color), transparent 34rem);
     --page-surface-gradient: linear-gradient(180deg, rgb(248, 250, 252), rgb(255, 255, 255));
     --warm-section-glow: radial-gradient(circle, var(--warm-glow-color), transparent 68%);
+    --focus-ring-color: rgba(217, 119, 6, 0.72);
+    --focus-ring-shadow: 0 0 0 0.25rem rgba(245, 158, 11, 0.18);
     --svg-icon-filter: grayscale(1) brightness(0) invert(44%);
     --svg-icon-opacity: 0.86;
 }
@@ -43,6 +45,39 @@ body {
 main {
     width: min(100% - 2rem, 72rem);
     margin-inline: auto;
+}
+
+main:focus {
+    outline: none;
+}
+
+:where(a, button):focus-visible {
+    outline: 3px solid var(--focus-ring-color);
+    outline-offset: 0.22rem;
+    box-shadow: var(--focus-ring-shadow);
+}
+
+.skip-link {
+    position: fixed;
+    top: max(1rem, env(safe-area-inset-top));
+    left: max(1rem, env(safe-area-inset-left));
+    z-index: 40;
+    display: inline-flex;
+    padding: 0.75rem 1rem;
+    color: rgb(30, 41, 59);
+    font-weight: 800;
+    text-decoration: none;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(148, 163, 184, 0.38);
+    border-radius: 9999px;
+    box-shadow: 0 18px 48px rgba(15, 23, 42, 0.14);
+    transform: translateY(calc(-100% - 1.5rem));
+    transition: transform 160ms ease;
+    backdrop-filter: blur(14px) saturate(1.15);
+}
+
+.skip-link:focus-visible {
+    transform: translateY(0);
 }
 
 img[src$=".svg"] {
@@ -285,11 +320,52 @@ img[src$=".svg"] {
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .hero__line:first-child::after {
-        animation: none;
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        transition-delay: 0s !important;
     }
-    .hero__logo-pill {
-        animation: none;
+
+    .hero__line:first-child::after,
+    .hero__logo-pill,
+    .technology-marquee__track {
+        animation: none !important;
+    }
+
+    .technology-marquee__track {
+        width: 100%;
+        transform: none;
+    }
+
+    .technology-marquee__list {
+        flex-wrap: wrap;
+        justify-content: center;
+        row-gap: 1rem;
+        padding-inline-end: 0;
+    }
+
+    .technology-marquee__list[aria-hidden="true"] {
+        display: none;
+    }
+
+    .theme-toggle:hover,
+    .hero__links a:hover,
+    .latest-post-card__article:hover,
+    .latest-posts__more-link:hover,
+    .paper-card__article:hover,
+    .paper-card__links a:hover,
+    .bookshelf-card__article:hover,
+    .bookshelf-card__article:hover .bookshelf-card__cover,
+    .event-card__article:hover,
+    .event-card__article--clickable:hover .event-card__action,
+    .event-card__action:hover,
+    .blog-index-card__article:hover,
+    .back-link:hover {
+        transform: none;
     }
 }
 
@@ -499,7 +575,8 @@ img[src$=".svg"] {
     opacity: 0.8;
 }
 
-.latest-post-card__article:hover {
+.latest-post-card__article:hover,
+.latest-post-card__article:focus-within {
     border-color: rgba(217, 119, 6, 0.34);
     box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
     transform: translateY(-0.2rem);
@@ -674,7 +751,8 @@ img[src$=".svg"] {
     opacity: 0.8;
 }
 
-.paper-card__article:hover {
+.paper-card__article:hover,
+.paper-card__article:focus-within {
     border-color: rgba(217, 119, 6, 0.34);
     box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
     transform: translateY(-0.2rem);
@@ -1014,7 +1092,8 @@ img[src$=".svg"] {
     cursor: pointer;
 }
 
-.event-card__article:hover {
+.event-card__article:hover,
+.event-card__article:focus-within {
     border-color: rgba(217, 119, 6, 0.34);
     box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
     transform: translateY(-0.2rem);
@@ -1196,7 +1275,8 @@ img[src$=".svg"] {
     opacity: 0.8;
 }
 
-.blog-index-card__article:hover {
+.blog-index-card__article:hover,
+.blog-index-card__article:focus-within {
     border-color: rgba(217, 119, 6, 0.34);
     box-shadow: 0 24px 64px rgba(15, 23, 42, 0.12);
     transform: translateY(-0.2rem);
@@ -1436,6 +1516,8 @@ img[src$=".svg"] {
     --page-top-glow: radial-gradient(circle at top, var(--warm-glow-color), transparent 34rem);
     --page-surface-gradient: linear-gradient(180deg, rgb(2, 6, 23), rgb(15, 23, 42));
     --warm-section-glow: radial-gradient(circle, var(--warm-glow-color), transparent 68%);
+    --focus-ring-color: rgba(251, 191, 36, 0.82);
+    --focus-ring-shadow: 0 0 0 0.25rem rgba(251, 191, 36, 0.18);
     --svg-icon-filter: grayscale(1) brightness(0) invert(78%);
     --svg-icon-opacity: 0.9;
 }
@@ -1459,6 +1541,7 @@ img[src$=".svg"] {
 
 :root[data-theme="dark"] .hero__logo-pill,
 :root[data-theme="dark"] .hero__links a,
+:root[data-theme="dark"] .skip-link,
 :root[data-theme="dark"] .theme-toggle,
 :root[data-theme="dark"] .latest-post-card__article,
 :root[data-theme="dark"] .latest-posts__more-link,
@@ -1477,12 +1560,16 @@ img[src$=".svg"] {
 }
 
 :root[data-theme="dark"] .latest-post-card__article:hover,
+:root[data-theme="dark"] .latest-post-card__article:focus-within,
 :root[data-theme="dark"] .latest-posts__more-link:hover,
 :root[data-theme="dark"] .paper-card__article:hover,
+:root[data-theme="dark"] .paper-card__article:focus-within,
 :root[data-theme="dark"] .bookshelf-card__article:hover,
 :root[data-theme="dark"] .event-card__article:hover,
+:root[data-theme="dark"] .event-card__article:focus-within,
 :root[data-theme="dark"] .theme-toggle:hover,
-:root[data-theme="dark"] .blog-index-card__article:hover {
+:root[data-theme="dark"] .blog-index-card__article:hover,
+:root[data-theme="dark"] .blog-index-card__article:focus-within {
     border-color: rgba(245, 158, 11, 0.42);
     box-shadow:
         0 24px 64px rgba(0, 0, 0, 0.42),
@@ -1502,6 +1589,7 @@ img[src$=".svg"] {
 }
 
 :root[data-theme="dark"] .hero__links a,
+:root[data-theme="dark"] .skip-link,
 :root[data-theme="dark"] .theme-toggle,
 :root[data-theme="dark"] .technology-marquee__item,
 :root[data-theme="dark"] .latest-posts__intro,
@@ -1604,6 +1692,7 @@ img[src$=".svg"] {
 }
 
 :root[data-theme="dark"] .event-card__article--clickable:hover .event-card__action,
+:root[data-theme="dark"] .event-card__article--clickable:focus-within .event-card__action,
 :root[data-theme="dark"] .event-card__action:hover {
     color: rgb(253, 186, 116);
 }
@@ -1639,6 +1728,8 @@ img[src$=".svg"] {
         --page-top-glow: radial-gradient(circle at top, var(--warm-glow-color), transparent 34rem);
         --page-surface-gradient: linear-gradient(180deg, rgb(2, 6, 23), rgb(15, 23, 42));
         --warm-section-glow: radial-gradient(circle, var(--warm-glow-color), transparent 68%);
+        --focus-ring-color: rgba(251, 191, 36, 0.82);
+        --focus-ring-shadow: 0 0 0 0.25rem rgba(251, 191, 36, 0.18);
         --svg-icon-filter: grayscale(1) brightness(0) invert(78%);
         --svg-icon-opacity: 0.9;
     }
@@ -1662,6 +1753,7 @@ img[src$=".svg"] {
 
     :root:not([data-theme="light"]) .hero__logo-pill,
     :root:not([data-theme="light"]) .hero__links a,
+    :root:not([data-theme="light"]) .skip-link,
     :root:not([data-theme="light"]) .theme-toggle,
     :root:not([data-theme="light"]) .latest-post-card__article,
     :root:not([data-theme="light"]) .latest-posts__more-link,
@@ -1680,12 +1772,16 @@ img[src$=".svg"] {
     }
 
     :root:not([data-theme="light"]) .latest-post-card__article:hover,
+    :root:not([data-theme="light"]) .latest-post-card__article:focus-within,
     :root:not([data-theme="light"]) .latest-posts__more-link:hover,
     :root:not([data-theme="light"]) .paper-card__article:hover,
+    :root:not([data-theme="light"]) .paper-card__article:focus-within,
     :root:not([data-theme="light"]) .bookshelf-card__article:hover,
     :root:not([data-theme="light"]) .event-card__article:hover,
+    :root:not([data-theme="light"]) .event-card__article:focus-within,
     :root:not([data-theme="light"]) .theme-toggle:hover,
-    :root:not([data-theme="light"]) .blog-index-card__article:hover {
+    :root:not([data-theme="light"]) .blog-index-card__article:hover,
+    :root:not([data-theme="light"]) .blog-index-card__article:focus-within {
         border-color: rgba(245, 158, 11, 0.42);
         box-shadow:
             0 24px 64px rgba(0, 0, 0, 0.42),
@@ -1705,6 +1801,7 @@ img[src$=".svg"] {
     }
 
     :root:not([data-theme="light"]) .hero__links a,
+    :root:not([data-theme="light"]) .skip-link,
     :root:not([data-theme="light"]) .theme-toggle,
     :root:not([data-theme="light"]) .technology-marquee__item,
     :root:not([data-theme="light"]) .latest-posts__intro,
@@ -1807,6 +1904,7 @@ img[src$=".svg"] {
     }
 
     :root:not([data-theme="light"]) .event-card__article--clickable:hover .event-card__action,
+    :root:not([data-theme="light"]) .event-card__article--clickable:focus-within .event-card__action,
     :root:not([data-theme="light"]) .event-card__action:hover {
         color: rgb(253, 186, 116);
     }

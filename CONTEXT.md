@@ -301,9 +301,9 @@ _Avoid_: Modified date, edited date, last touched date
 - Informal experiments could have become a separate content type; resolved: publish them as **Project Writeups**.
 - "skills" could imply proficiency claims; resolved: use unlabeled marquee rows of **Technology Tags** without proficiency levels.
 - Marquee animation could have been JavaScript-driven from the start; resolved: use CSS-first duplicated markup, with JavaScript reserved for fixing poor loop quality if needed.
-- Alpine.js could have handled small browser interactions; resolved: skip it in version 1 because the planned motion is presentational, while keeping it as a possible later option for richer user-driven interactions.
+- Alpine.js could have handled small browser interactions; resolved: skip it in version 1 because the current interactions remain small enough for plain JavaScript, while keeping Alpine.js as a possible later option for richer user-driven interactions.
 - HTMX or Alpine AJAX could have been used for frontend dynamism; resolved: exclude them in version 1 because static GitHub Pages has no backend fragment endpoints.
-- Reduced-motion behavior could have been added because the site includes animation; resolved: do not support reduced-motion in version 1 and reconsider only if accessibility requirements become a priority later.
+- Reduced-motion behavior could have been deferred because the animations are decorative; resolved: support reduced-motion in version 1 with CSS-first safeguards that stop decorative animation and minimize hover movement.
 - Hero logos could have been arbitrary decoration or proficiency badges; resolved: use **Hero Technology Logos** as decorative but curated core technical associations without ratings.
 - Hero logo source could have been duplicated from the marquee or fully separate; resolved: select **Hero Technology Logos** in profile content while validating them against known **Technology Tags**.
 - Hero logo movement could have used JavaScript positioning/randomization; resolved: use CSS-only subtle motion with explicit designed positions.

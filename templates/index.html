@@ -3,8 +3,9 @@
 {% include "_head.html" %}
 
 <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     {% include "_theme_toggle.html" %}
-    <main>
+    <main id="main-content" tabindex="-1">
         <section class="hero">
             <div class="hero__content">
                 <div class="hero__avatar-frame">
@@ -14,7 +15,7 @@
                         {{ hero_logo_technology.label }}
                     </span>
                     {% endfor %}
-                    <img src="{{ profile.avatar }}" alt="avatar" class="hero__avatar">
+                    <img src="{{ profile.avatar }}" alt="{{ profile.name }}" class="hero__avatar" fetchpriority="high" decoding="async">
                 </div>
                 <h1 class="hero__name">{{ profile.name }}</h1>
                 <ul class="hero__lines">

@@ -14,7 +14,8 @@
 - Pygments for code highlighting
 - Small custom JavaScript hero carousel/typewriter behavior
 - CSS animations for decorative motion
-- System-preference dark mode
+- System-preference dark mode with a manual theme override
+- Reduced-motion handling for decorative animation
 - Root-relative internal URLs
 - Pretty directory-style generated page URLs
 
@@ -141,8 +142,6 @@ Fixed relative order, with empty content sections hidden:
 - Separate `/events/` page
 - Book reflections inside bookshelf data
 - Want-to-read bookshelf status
-- Manual dark-mode toggle
-- Reduced-motion behavior implementation
 - Alpine.js, unless later user-driven interactions justify it after v1
 - Alpine AJAX, HTMX, or other server/fragment-driven interaction libraries
 - Heavy frontend framework
@@ -164,7 +163,6 @@ Potential improvements after the first working deployment:
 - accessibility checker
 - Lighthouse/performance checks
 - Alpine.js for richer user-driven interactions if the site grows beyond presentational animation
-- Manual theme toggle
 - `/books/` archive page
 - `/papers/` archive page
 - Featured blog posts

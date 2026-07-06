@@ -6,7 +6,7 @@ The user wants a personal portfolio website hosted on GitHub Pages while keeping
 
 The site should provide lightweight publishing for Markdown blog posts, a polished hero, an unlabeled technology marquee, formal papers, a compact bookshelf, certificates with downloadable PDFs, and event participation cards. It should remain static, maintainable, deployable through GitHub Actions, and strict enough to catch broken content before publication.
 
-The repository currently contains planning documentation only. Implementation has not started.
+The repository now contains the Python site compiler, source content, templates, styling, tests, and GitHub Pages deployment workflow.
 
 ## Primary Audience
 
@@ -29,8 +29,8 @@ The site has no backend, database, CMS, server-side rendering runtime, FastAPI a
 - Commit `uv.lock` and `package-lock.json`; CI uses locked dependency installation and fails on missing or stale lockfiles.
 - Use GitHub Pages user-site hosting at domain root in v1.
 - Do not implement custom-domain/CNAME behavior in v1.
-- Use system-preference dark mode in v1.
-- Do not implement reduced-motion behavior in v1; reconsider only if accessibility requirements become a priority later.
+- Use system-preference dark mode in v1 with a lightweight manual theme override.
+- Support reduced-motion preferences by disabling decorative animation and minimizing transition movement.
 - Use CSS animations for decorative motion and small custom JavaScript for isolated behavior such as the hero carousel/typewriter.
 - Do not use Alpine.js in v1; reconsider it later only if user-driven interactions grow beyond presentational animation.
 - Do not use HTMX or Alpine AJAX in v1 because GitHub Pages has no backend fragment endpoints.
@@ -326,8 +326,6 @@ Avoid tests that assert private helper calls, parser internals, or exact templat
 - Dedicated books or papers archive pages.
 - Book summaries/reflections in bookshelf data.
 - Want-to-read bookshelf items.
-- Manual dark-mode toggle.
-- Reduced-motion implementation.
 - Alpine.js for v1 presentational animation.
 - HTMX, Alpine AJAX, or server/fragment-driven interaction libraries.
 - Heavy JS framework, canvas, WebGL, or 3D animation system.

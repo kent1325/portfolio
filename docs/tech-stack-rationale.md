@@ -127,7 +127,7 @@ Reasons:
 - The planned moving parts are presentational: a hero typewriter/carousel, continuous technology marquee rows, and subtle pulsing/floating hero technology logos.
 - CSS is the right tool for continuous/decorative motion such as marquee loops and logo pulse/float.
 - The typewriter/carousel has timing state, but it is isolated enough for a tiny local script that progressively enhances pre-rendered hero lines.
-- Alpine.js is useful for user-driven UI state such as tabs, filters, modals, navigation drawers, and theme toggles; v1 does not have those interactions.
+- Alpine.js is useful for richer user-driven UI state such as tabs, filters, modals, and navigation drawers; the v1 theme toggle is small enough for plain JavaScript.
 - Alpine AJAX and HTMX are designed around server-rendered fragments or dynamic fetch/replace flows. GitHub Pages has no backend fragment endpoints, so they would not earn their complexity in v1.
 - Avoiding a frontend framework keeps the technical story centered on the Python compiler and static deployment pipeline.
 
@@ -144,7 +144,7 @@ V1 animation is intentionally restrained:
 - Technology marquee: CSS-first continuous animation using duplicated rendered items; JavaScript may be added later only if real content shows the CSS loop quality is insufficient.
 - Hero technology logos: CSS-only subtle motion with explicit designed positions.
 
-Do not support reduced-motion behavior in v1. Reconsider only if accessibility requirements become a priority later.
+Support reduced-motion preferences in v1 with CSS-first safeguards: stop decorative animations, hide duplicated marquee content, and avoid animated hover movement where possible without adding framework complexity.
 
 ## Hero technology logos
 

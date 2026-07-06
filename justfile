@@ -19,6 +19,9 @@ smoke:
     test -f dist/blog/index.html
     grep -q '<title>Kent Vugs Nielsen</title>' dist/index.html
     grep -q '<meta name="color-scheme" content="light dark">' dist/index.html
+    grep -q '<meta name="theme-color" content="#f8fafc" data-theme-color>' dist/index.html
+    grep -q 'class="skip-link"' dist/index.html
+    grep -q '<main id="main-content" tabindex="-1">' dist/index.html
     grep -q '/assets/scripts/theme-toggle.js' dist/index.html
     grep -q 'data-theme-toggle' dist/index.html
     grep -q '<meta name="description" content=' dist/index.html
@@ -66,6 +69,8 @@ smoke:
     test -f dist/assets/images/favicon.svg
     test -f dist/assets/books/designing-machine-learning-systems.jpg
     grep -q "prefers-color-scheme: dark" dist/assets/styles.css
+    grep -q "prefers-reduced-motion: reduce" dist/assets/styles.css
+    grep -q "focus-visible" dist/assets/styles.css
     grep -q "data-theme=\\\"dark\\\"" dist/assets/styles.css
     grep -q "technology-marquee-scroll" dist/assets/styles.css
     test -f dist/assets/icons/python.svg

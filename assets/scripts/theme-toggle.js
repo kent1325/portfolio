@@ -1,6 +1,9 @@
 const themeStorageKey = "portfolio-theme";
+const lightThemeColor = "#f8fafc";
+const darkThemeColor = "#020617";
 const themeMediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
 const themeToggleButtons = Array.from(document.querySelectorAll("[data-theme-toggle]"));
+const themeColorMeta = document.querySelector("[data-theme-color]");
 
 function readStoredTheme() {
     try {
@@ -44,6 +47,17 @@ function applyStoredTheme() {
     document.documentElement.style.colorScheme = themeMediaQuery.matches ? "dark" : "light";
 }
 
+function updateThemeColor() {
+    if (!themeColorMeta) {
+        return;
+    }
+
+    themeColorMeta.setAttribute(
+        "content",
+        getResolvedTheme() === "dark" ? darkThemeColor : lightThemeColor
+    );
+}
+
 function updateThemeToggleButtons() {
     const resolvedTheme = getResolvedTheme();
     const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
@@ -68,6 +82,7 @@ function updateThemeToggleButtons() {
 
 function syncTheme() {
     applyStoredTheme();
+    updateThemeColor();
     updateThemeToggleButtons();
 }
 

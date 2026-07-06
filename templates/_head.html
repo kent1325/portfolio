@@ -2,16 +2,32 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
+    <meta name="theme-color" content="#f8fafc" data-theme-color>
     <script>
         (() => {
+            const lightThemeColor = "#f8fafc";
+            const darkThemeColor = "#020617";
+            let storedTheme = null;
+
             try {
                 const theme = localStorage.getItem("portfolio-theme");
                 if (theme === "dark" || theme === "light") {
+                    storedTheme = theme;
                     document.documentElement.dataset.theme = theme;
                     document.documentElement.style.colorScheme = theme;
                 }
             } catch {
                 // Ignore storage errors and fall back to the user's system preference.
+            }
+
+            const resolvedTheme = storedTheme
+                ?? (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+            const themeColor = document.querySelector("[data-theme-color]");
+            if (themeColor) {
+                themeColor.setAttribute(
+                    "content",
+                    resolvedTheme === "dark" ? darkThemeColor : lightThemeColor
+                );
             }
         })();
     </script>
