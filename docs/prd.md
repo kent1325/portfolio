@@ -334,7 +334,7 @@ Avoid tests that assert private helper calls, parser internals, or exact templat
 - File-watching development server.
 - Custom-domain/CNAME handling.
 - External link reachability checking.
-- Dependabot, pre-commit, accessibility checks, and Lighthouse in v1.
+- Dependabot, automated accessibility checks, and Lighthouse in v1.
 
 ## Further Notes
 

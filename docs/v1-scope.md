@@ -158,7 +158,6 @@ Fixed relative order, with empty content sections hidden:
 Potential improvements after the first working deployment:
 
 - Dependabot
-- pre-commit hooks
 - external link checker
 - accessibility checker
 - Lighthouse/performance checks

@@ -86,5 +86,11 @@ smoke:
 
 check: format-check lint test build smoke
 
+hooks-install:
+    uv run pre-commit install
+
+hooks-run:
+    uv run pre-commit run --all-files
+
 serve:
     uv run python -m http.server 8000 -d dist
