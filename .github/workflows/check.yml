@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -25,7 +25,7 @@ jobs:
           cache: "npm"
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b
+        uses: astral-sh/setup-uv@f98e06938123ccabd21905ea5d0069192241f9f1
         with:
           enable-cache: true
 
@@ -46,7 +46,7 @@ jobs:
 
       - name: Upload audit reports
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: audit-reports-check-${{ github.run_id }}-${{ github.run_attempt }}
           path: audit-reports/
