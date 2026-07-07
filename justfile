@@ -1,12 +1,12 @@
 format:
-    uv run ruff check --fix src tests
-    uv run ruff format src tests
+    uv run ruff check --fix src tests scripts
+    uv run ruff format src tests scripts
 
 format-check:
-    uv run ruff format --check src tests
+    uv run ruff format --check src tests scripts
 
 lint:
-    uv run ruff check src tests
+    uv run ruff check src tests scripts
 
 test:
     PYTHONPATH=src uv run pytest
@@ -85,6 +85,11 @@ smoke:
     test -f dist/assets/icons/github.svg
 
 check: format-check lint test build smoke
+
+audit-run:
+    PYTHONPATH=src uv run python scripts/run_audits.py
+
+audit: build audit-run
 
 hooks-install:
     uv run pre-commit install

@@ -333,8 +333,6 @@ Avoid tests that assert private helper calls, parser internals, or exact templat
 - Incremental builds or render caching.
 - File-watching development server.
 - Custom-domain/CNAME handling.
-- External link reachability checking.
-- Dependabot, automated accessibility checks, and Lighthouse in v1.
 
 ## Further Notes
 

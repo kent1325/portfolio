@@ -151,16 +151,11 @@ Fixed relative order, with empty content sections hidden:
 - File watching dev server
 - Incremental builds or render caching
 - Custom-domain/CNAME handling
-- External link reachability checks
 
 ## Post-v1 Backlog
 
 Potential improvements after the first working deployment:
 
-- Dependabot
-- external link checker
-- accessibility checker
-- Lighthouse/performance checks
 - Alpine.js for richer user-driven interactions if the site grows beyond presentational animation
 - `/books/` archive page
 - `/papers/` archive page

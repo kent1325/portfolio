@@ -17,7 +17,7 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.14"
-      
+
       - name: Set up Node
         uses: actions/setup-node@v6
         with:
@@ -40,3 +40,15 @@ jobs:
 
       - name: Run checks
         run: just check
+
+      - name: Run audits
+        run: just audit-run
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-reports-check-${{ github.run_id }}-${{ github.run_attempt }}
+          path: audit-reports/
+          if-no-files-found: ignore
+          retention-days: 14

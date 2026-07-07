@@ -56,6 +56,18 @@ jobs:
       - name: Run checks and build site
         run: just check
 
+      - name: Run audits
+        run: just audit-run
+
+      - name: Upload audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: audit-reports-deploy-${{ github.run_id }}-${{ github.run_attempt }}
+          path: audit-reports/
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
 
