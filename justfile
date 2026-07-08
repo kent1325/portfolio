@@ -47,6 +47,8 @@ smoke:
     grep -q "latest-posts" dist/index.html
     grep -q "latest-post-card" dist/index.html
     grep -q "papers" dist/index.html
+    grep -q "paper-card__title-link" dist/index.html
+    grep -q "paper-card__article paper-card__article--clickable" dist/index.html
     grep -q "Condition Monitoring with Machine Learning" dist/index.html
     grep -q "/assets/papers/condition-monitoring-with-machine-learning.pdf" dist/index.html
     test -f dist/assets/papers/condition-monitoring-with-machine-learning.pdf

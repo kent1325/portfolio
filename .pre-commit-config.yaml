@@ -12,3 +12,9 @@ repos:
         language: system
         pass_filenames: false
         always_run: true
+      - id: portfolio-audit
+        name: Run generated-site audit gate
+        entry: just audit-run
+        language: system
+        pass_filenames: false
+        always_run: true

@@ -85,6 +85,155 @@ def discover_pages(dist_path: Path) -> list[str]:
     return [path.relative_to(dist_path).as_posix() for path in sorted(dist_path.rglob("*.html"))]
 
 
+def read_json_report(path: Path) -> dict[str, Any] | None:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        return None
+    except json.JSONDecodeError as error:
+        return {"error": f"Invalid JSON report: {error}"}
+
+
+def display_path(path: Path) -> str:
+    try:
+        return path.relative_to(Path.cwd()).as_posix()
+    except ValueError:
+        return str(path)
+
+
+def result_label(passed: bool) -> str:
+    return "✅ Passed" if passed else "❌ Failed"
+
+
+def format_accessibility_details(report: dict[str, Any] | None) -> str:
+    if report is None:
+        return "report missing"
+    if "error" in report:
+        return str(report["error"])
+
+    summary = report.get("summary", {})
+    pages = summary.get("pages", 0)
+    errors = summary.get("errors", 0)
+    warnings = summary.get("warnings", 0)
+    return f"{pages} pages, {errors} errors, {warnings} warnings"
+
+
+def format_external_link_details(report: dict[str, Any] | None) -> str:
+    if report is None:
+        return "report missing"
+    if "error" in report:
+        return str(report["error"])
+
+    summary = report.get("summary", {})
+    ok = summary.get("ok", 0)
+    warnings = summary.get("warnings", 0)
+    failed = summary.get("failed", 0)
+    return f"{ok} ok, {warnings} warnings, {failed} failed"
+
+
+def limit_notes(notes: list[str], limit: int) -> list[str]:
+    if len(notes) <= limit:
+        return notes
+    remaining = len(notes) - limit
+    return [*notes[:limit], f"- …and {remaining} more. See the JSON reports for details."]
+
+
+def collect_accessibility_notes(report: dict[str, Any] | None, limit: int = 10) -> list[str]:
+    if not report:
+        return []
+
+    notes: list[str] = []
+    for page in report.get("pages", []):
+        file_name = page.get("file", "unknown page")
+        for error in page.get("errors", []):
+            notes.append(f"- accessibility error in `{file_name}`: {error}")
+        for warning in page.get("warnings", []):
+            notes.append(f"- accessibility warning in `{file_name}`: {warning}")
+    return limit_notes(notes, limit)
+
+
+def collect_external_link_notes(report: dict[str, Any] | None, limit: int = 10) -> list[str]:
+    if not report:
+        return []
+
+    notes: list[str] = []
+    for result in report.get("results", []):
+        status = result.get("status")
+        if status not in {"failed", "warning"}:
+            continue
+        reason = result.get("http_status") or result.get("message") or "unknown"
+        source = (result.get("sources") or [{"file": "unknown page"}])[0]
+        source_file = source.get("file", "unknown page")
+        notes.append(
+            f"- external link {status}: {result.get('url')} ({reason}) from `{source_file}`"
+        )
+    return limit_notes(notes, limit)
+
+
+def build_markdown_summary(
+    reports_path: Path,
+    pages: list[str],
+    results: dict[str, bool],
+) -> str:
+    accessibility_path = reports_path / "accessibility" / "accessibility.json"
+    external_links_path = reports_path / "links" / "external-links.json"
+    accessibility_report = read_json_report(accessibility_path)
+    external_links_report = read_json_report(external_links_path)
+
+    lines = [
+        "## Audit summary",
+        "",
+        f"Pages audited: {len(pages)}",
+        "",
+        "| Audit | Result | Details | Report |",
+        "| --- | --- | --- | --- |",
+        (
+            "| Static accessibility | "
+            f"{result_label(results.get('accessibility', False))} | "
+            f"{format_accessibility_details(accessibility_report)} | "
+            f"`{display_path(accessibility_path)}` |"
+        ),
+        (
+            "| External links | "
+            f"{result_label(results.get('external_links', False))} | "
+            f"{format_external_link_details(external_links_report)} | "
+            f"`{display_path(external_links_path)}` |"
+        ),
+    ]
+
+    notes = [
+        *collect_accessibility_notes(accessibility_report),
+        *collect_external_link_notes(external_links_report),
+    ]
+    if notes:
+        lines.extend(["", "### Attention needed", "", *notes])
+    else:
+        lines.extend(["", "No audit warnings or failures were reported."])
+
+    if pages:
+        lines.extend(["", "<details>", "<summary>Pages checked</summary>", ""])
+        lines.extend(f"- `{page}`" for page in pages)
+        lines.extend(["", "</details>"])
+
+    return "\n".join(lines)
+
+
+def write_markdown_summary(
+    reports_path: Path,
+    pages: list[str],
+    results: dict[str, bool],
+) -> None:
+    markdown = build_markdown_summary(reports_path, pages, results)
+    summary_path = reports_path / "summary.md"
+    summary_path.write_text(markdown + "\n", encoding="utf-8")
+    print("\n" + markdown)
+
+    github_step_summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if github_step_summary:
+        with Path(github_step_summary).open("a", encoding="utf-8") as summary_file:
+            summary_file.write(markdown + "\n")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run generated-site accessibility and external link audits."
@@ -106,6 +255,7 @@ def build_summary(reports_path: Path, pages: list[str], results: dict[str, bool]
         "reports": {
             "accessibility": str(reports_path / "accessibility" / "accessibility.json"),
             "external_links": str(reports_path / "links" / "external-links.json"),
+            "markdown_summary": str(reports_path / "summary.md"),
         },
         "results": results,
     }
@@ -142,6 +292,7 @@ def main() -> int:
         json.dumps(summary, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
+    write_markdown_summary(reports_path, pages, results)
 
     failed = [name for name, passed in results.items() if not passed]
     if failed:

@@ -110,8 +110,9 @@
             </div>
             <ul class="papers__list">
                 {% for paper in papers %}
+                {% set paper_primary_link = paper.links.pdf or paper.links.external or paper.links.github %}
                 <li class="paper-card">
-                    <article class="paper-card__article">
+                    <article class="paper-card__article{% if paper_primary_link %} paper-card__article--clickable{% endif %}">
                         <div class="paper-card__meta">
                             <time datetime="{{ paper.year }}">{{ paper.year }}</time>
                             {% if paper.type %}
@@ -123,7 +124,13 @@
                             <span>{{ paper.institution }}</span>
                             {% endif %}
                         </div>
-                        <h3 class="paper-card__title">{{ paper.title }}</h3>
+                        <h3 class="paper-card__title">
+                            {% if paper_primary_link %}
+                            <a href="{{ paper_primary_link }}" class="paper-card__title-link" target="_blank" rel="noopener">{{ paper.title }}</a>
+                            {% else %}
+                            {{ paper.title }}
+                            {% endif %}
+                        </h3>
                         <p class="paper-card__summary">{{ paper.summary }}</p>
                         {% if paper.tags %}
                         <ul class="paper-card__tags" aria-label="Tags for {{ paper.title }}">
