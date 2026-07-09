@@ -65,17 +65,17 @@
             </section>
         </section>
         {% if latest_posts is defined and latest_posts|length > 0 %}
-        <section class="latest-posts" aria-labelledby="latest-posts-heading">
-            <div class="latest-posts__header">
-                <h2 id="latest-posts-heading" class="latest-posts__title">Latest thoughts</h2>
+        <section class="latest-posts home-section" aria-labelledby="latest-posts-heading">
+            <div class="latest-posts__header home-section__header">
+                <h2 id="latest-posts-heading" class="latest-posts__title home-section__title">Latest thoughts</h2>
                 <p class="latest-posts__more">
                     <a href="/blog/" class="latest-posts__more-link">Read all <span aria-hidden="true">→</span></a>
                 </p>
             </div>
-            <ul class="latest-posts__list">
+            <ul class="latest-posts__list home-card-list">
                 {% for post in latest_posts %}
                 <li class="latest-post-card">
-                    <article class="latest-post-card__article">
+                    <article class="latest-post-card__article latest-post-card__article--clickable home-card home-card--clickable">
                         <div class="latest-post-card__meta">
                             <time datetime="{{ post.published_date }}">Published {{ post.published_date }}</time>
                             {% if post.updated_date %}
@@ -84,7 +84,7 @@
                             {% endif %}
                         </div>
                         <h3 class="latest-post-card__title">
-                            <a href="/blog/{{ post.slug }}/">{{ post.title }}</a>
+                            <a href="/blog/{{ post.slug }}/" class="latest-post-card__title-link card-title-link">{{ post.title }}</a>
                         </h3>
                         <p class="latest-post-card__summary">{{ post.summary }}</p>
                         {% if post.tags %}
@@ -100,144 +100,9 @@
             </ul>
         </section>
         {% endif %}
-        {% if papers is defined and papers|length > 0 %}
-        <section class="papers" aria-labelledby="papers-heading">
-            <div class="papers__header">
-                <h2 id="papers-heading" class="papers__title">Papers</h2>
-                <p class="papers__intro">
-                    Formal research and university work with downloadable artifacts.
-                </p>
-            </div>
-            <ul class="papers__list">
-                {% for paper in papers %}
-                {% set paper_primary_link = paper.links.pdf or paper.links.external or paper.links.github %}
-                <li class="paper-card">
-                    <article class="paper-card__article{% if paper_primary_link %} paper-card__article--clickable{% endif %}">
-                        <div class="paper-card__meta">
-                            <time datetime="{{ paper.year }}">{{ paper.year }}</time>
-                            {% if paper.type %}
-                            <span aria-hidden="true">·</span>
-                            <span>{{ paper.type }}</span>
-                            {% endif %}
-                            {% if paper.institution %}
-                            <span aria-hidden="true">·</span>
-                            <span>{{ paper.institution }}</span>
-                            {% endif %}
-                        </div>
-                        <h3 class="paper-card__title">
-                            {% if paper_primary_link %}
-                            <a href="{{ paper_primary_link }}" class="paper-card__title-link" target="_blank" rel="noopener">{{ paper.title }}</a>
-                            {% else %}
-                            {{ paper.title }}
-                            {% endif %}
-                        </h3>
-                        <p class="paper-card__summary">{{ paper.summary }}</p>
-                        {% if paper.tags %}
-                        <ul class="paper-card__tags" aria-label="Tags for {{ paper.title }}">
-                            {% for tag in paper.tags %}
-                            <li>{{ tag }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                        <div class="paper-card__links" aria-label="Links for {{ paper.title }}">
-                            {% if paper.links.pdf %}
-                            <a href="{{ paper.links.pdf }}" target="_blank" rel="noopener">Read PDF <span aria-hidden="true">↗</span></a>
-                            {% endif %}
-                            {% if paper.links.external %}
-                            <a href="{{ paper.links.external }}" target="_blank" rel="noopener">Paper page <span aria-hidden="true">↗</span></a>
-                            {% endif %}
-                            {% if paper.links.github %}
-                            <a href="{{ paper.links.github }}" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
-                            {% endif %}
-                        </div>
-                    </article>
-                </li>
-                {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
-        {% if books is defined and books|length > 0 %}
-        <section class="bookshelf" aria-labelledby="bookshelf-heading">
-            <div class="bookshelf__header">
-                <h2 id="bookshelf-heading" class="bookshelf__title">Bookshelf</h2>
-                <p class="bookshelf__intro">
-                    Books shaping how I think about machine learning, systems, and engineering practice.
-                </p>
-            </div>
-            <ul class="bookshelf__list">
-                {% for book in books %}
-                <li class="bookshelf-card">
-                    <article class="bookshelf-card__article">
-                        <div class="bookshelf-card__cover-frame">
-                            <img src="{{ book.cover }}" alt="Cover of {{ book.title }}" class="bookshelf-card__cover" loading="lazy" decoding="async">
-                        </div>
-                        <div class="bookshelf-card__content">
-                            <p class="bookshelf-card__status">
-                                {{ "Currently reading" if book.status == "reading" else "Read" }}
-                            </p>
-                            <h3 class="bookshelf-card__title">{{ book.title }}</h3>
-                            <p class="bookshelf-card__author">{{ book.author }}</p>
-                            {% if book.tags %}
-                            <ul class="bookshelf-card__tags" aria-label="Tags for {{ book.title }}">
-                                {% for tag in book.tags %}
-                                <li>{{ tag }}</li>
-                                {% endfor %}
-                            </ul>
-                            {% endif %}
-                        </div>
-                    </article>
-                </li>
-                {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
-        {% if events is defined and events|length > 0 %}
-        <section class="events" aria-labelledby="events-heading">
-            <div class="events__header">
-                <h2 id="events-heading" class="events__title">Events</h2>
-                <p class="events__intro">
-                    Technical gatherings and community events I have taken part in.
-                </p>
-            </div>
-            <ul class="events__list">
-                {% for event in events %}
-                <li class="event-card">
-                    {% if event.links and event.links.pdf %}
-                    <a href="{{ event.links.pdf }}" class="event-card__article event-card__article--clickable" target="_blank" rel="noopener" aria-label="Open participation certificate for {{ event.name }}">
-                    {% else %}
-                    <article class="event-card__article">
-                    {% endif %}
-                        <div class="event-card__meta">
-                            <span>{{ event.role_label }}</span>
-                            <span aria-hidden="true">·</span>
-                            <time datetime="{{ event.date }}">{{ event.date }}</time>
-                        </div>
-                        <h3 class="event-card__title">{{ event.name }}</h3>
-                        {% if event.location %}
-                        <p class="event-card__location">{{ event.location }}</p>
-                        {% endif %}
-                        {% if event.tags %}
-                        <ul class="event-card__tags" aria-label="Tags for {{ event.name }}">
-                            {% for tag in event.tags %}
-                            <li>{{ tag }}</li>
-                            {% endfor %}
-                        </ul>
-                        {% endif %}
-                        {% if event.links and event.links.pdf %}
-                        <span class="event-card__action">View certificate <span aria-hidden="true">↗</span></span>
-                        {% elif event.links and event.links.homepage %}
-                        <a href="{{ event.links.homepage }}" class="event-card__action" target="_blank" rel="noopener">Event homepage <span aria-hidden="true">↗</span></a>
-                        {% endif %}
-                    {% if event.links and event.links.pdf %}
-                    </a>
-                    {% else %}
-                    </article>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
+        {% include "_papers.html" %}
+        {% include "_bookshelf.html" %}
+        {% include "_events.html" %}
     </main>
     <footer class="site-footer">
         <div class="site-footer__inner">

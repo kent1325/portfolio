@@ -141,6 +141,7 @@ Publication behavior:
 - Future `published_date` values do not schedule or hide posts in v1.
 - Blog index at `/blog/` is always generated, even with zero published posts.
 - Homepage shows the five latest published posts when any exist.
+- Homepage blog cards link to `/blog/<slug>/` using a stretched title link, making the full card target clickable without changing the canonical post route.
 - Duplicate titles are allowed; slugs are the unique post identity.
 - No series metadata or tag filtering/pages in v1.
 
@@ -231,6 +232,8 @@ Rules:
 - `links.external` must be an `http://` or `https://` URL and should point to a formal paper page.
 - `links.github` must start with `https://github.com/`, may support the paper, and does not satisfy the artifact requirement.
 - Papers are shown on the homepage in v1.
+- Paper cards choose a primary stretched-card link in this priority order: `links.pdf`, then `links.external`, then `links.github`.
+- Paper cards may also show explicit secondary links for PDF, paper page, and code; those links remain independently clickable.
 - Papers are sorted by `year` descending, preserving source order for papers with the same year.
 - No separate `/papers/` archive page in v1.
 
@@ -268,7 +271,8 @@ Rules:
 - `want_to_read` is not supported in v1.
 - `summary`, `reflection`, and `year_read` are not supported in v1.
 - If the owner wants to share thoughts about a book, publish a blog post.
-- Books are shown on the homepage in v1.
+- Books are shown on the homepage in v1 as compact, non-clickable bookshelf cards.
+- Book cards do not link out to stores, Goodreads, summaries, or reflections in v1.
 - No separate `/books/` archive page in v1.
 
 ## Certificates
@@ -351,8 +355,32 @@ Rules:
 - PDF validation requires a `/assets/` path, no `..`, an existing file, and a `.pdf` suffix; v1 does not inspect file headers.
 - Recommended event PDF location is `/assets/events/`, but v1 only requires a local PDF under `/assets/`.
 - All events are shown on the homepage in v1.
+- If `links.pdf` exists, the whole event card links to the local participation artifact.
+- If `links.pdf` is absent and `links.homepage` exists, only the event action link points to the homepage.
 - Events are sorted by `date` descending.
 - For sorting, partial event dates use the last possible missing value: `YYYY` behaves like `YYYY-12-31`, and `YYYY-MM` behaves like the last day of that month.
 - Events represent participation, not a future event calendar.
 - Missing or empty event content hides the section.
 - No separate `/events/` archive page in v1.
+
+## Homepage composition and routes
+
+Generated routes in v1 are intentionally limited to:
+
+```text
+/              → dist/index.html
+/blog/         → dist/blog/index.html
+/blog/<slug>/  → dist/blog/<slug>/index.html
+```
+
+Papers, books, and events are homepage-only content sections in v1. Missing or empty optional homepage sections are hidden instead of showing placeholders.
+
+The homepage template keeps Papers, Bookshelf, and Events in section partials:
+
+```text
+templates/_papers.html
+templates/_bookshelf.html
+templates/_events.html
+```
+
+These sections share the neutral homepage card base and section rhythm styles, with content-specific behavior layered on top: papers use stretched title links plus secondary links, bookshelf cards are non-clickable, and PDF-backed event cards are whole-card links.

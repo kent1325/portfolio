@@ -356,6 +356,15 @@ Generate pretty directory-style HTML paths:
 
 Generate `/blog/` even when there are zero published posts. Hide empty homepage content sections rather than showing placeholders.
 
+Papers, Bookshelf, and Events remain homepage-only in v1 and are rendered through `templates/_papers.html`, `templates/_bookshelf.html`, and `templates/_events.html`. Keep their shared homepage section/card styles centralized, with only content-specific behavior in section classes.
+
+Homepage card behavior:
+
+- Latest blog post cards link to `/blog/<slug>/` with a stretched title link.
+- Paper cards use a primary stretched title link in priority order: PDF, external paper page, then GitHub; explicit secondary links remain clickable.
+- Bookshelf cards are non-clickable.
+- Event cards with a local PDF are whole-card links to the PDF; events without a PDF may expose only an action link to the event homepage.
+
 Copy the full `assets/` directory to `dist/assets/`, including unreferenced files.
 
 ## CI/CD for v1

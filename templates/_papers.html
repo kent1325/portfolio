@@ -1,0 +1,56 @@
+{% if papers is defined and papers|length > 0 %}
+<section class="papers home-section" aria-labelledby="papers-heading">
+    <div class="papers__header home-section__header">
+        <h2 id="papers-heading" class="papers__title home-section__title">Papers</h2>
+        <p class="papers__intro home-section__intro">
+            Formal research and university work with downloadable artifacts.
+        </p>
+    </div>
+    <ul class="papers__list home-card-list">
+        {% for paper in papers %}
+        {% set paper_primary_link = paper.links.pdf or paper.links.external or paper.links.github %}
+        <li class="paper-card">
+            <article class="paper-card__article{% if paper_primary_link %} paper-card__article--clickable{% endif %} home-card{% if paper_primary_link %} home-card--clickable{% endif %}">
+                <div class="paper-card__meta">
+                    <time datetime="{{ paper.year }}">{{ paper.year }}</time>
+                    {% if paper.type %}
+                    <span aria-hidden="true">·</span>
+                    <span>{{ paper.type }}</span>
+                    {% endif %}
+                    {% if paper.institution %}
+                    <span aria-hidden="true">·</span>
+                    <span>{{ paper.institution }}</span>
+                    {% endif %}
+                </div>
+                <h3 class="paper-card__title">
+                    {% if paper_primary_link %}
+                    <a href="{{ paper_primary_link }}" class="paper-card__title-link card-title-link" target="_blank" rel="noopener">{{ paper.title }}</a>
+                    {% else %}
+                    {{ paper.title }}
+                    {% endif %}
+                </h3>
+                <p class="paper-card__summary">{{ paper.summary }}</p>
+                {% if paper.tags %}
+                <ul class="paper-card__tags" aria-label="Tags for {{ paper.title }}">
+                    {% for tag in paper.tags %}
+                    <li>{{ tag }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <div class="paper-card__links" aria-label="Links for {{ paper.title }}">
+                    {% if paper.links.pdf %}
+                    <a href="{{ paper.links.pdf }}" target="_blank" rel="noopener">Read PDF <span aria-hidden="true">↗</span></a>
+                    {% endif %}
+                    {% if paper.links.external %}
+                    <a href="{{ paper.links.external }}" target="_blank" rel="noopener">Paper page <span aria-hidden="true">↗</span></a>
+                    {% endif %}
+                    {% if paper.links.github %}
+                    <a href="{{ paper.links.github }}" target="_blank" rel="noopener">Code <span aria-hidden="true">↗</span></a>
+                    {% endif %}
+                </div>
+            </article>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endif %}

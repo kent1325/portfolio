@@ -46,6 +46,8 @@ smoke:
     grep -q "latest-posts-heading" dist/index.html
     grep -q "latest-posts" dist/index.html
     grep -q "latest-post-card" dist/index.html
+    grep -q "latest-post-card__article latest-post-card__article--clickable" dist/index.html
+    grep -q "latest-post-card__title-link" dist/index.html
     grep -q "papers" dist/index.html
     grep -q "paper-card__title-link" dist/index.html
     grep -q "paper-card__article paper-card__article--clickable" dist/index.html
