@@ -9,7 +9,7 @@
     "css": "tailwindcss -i styles/input.css -o dist/assets/styles.css"
   },
   "devDependencies": {
-    "@tailwindcss/cli": "^4.3.2",
+    "@tailwindcss/cli": "^4.3.3",
     "@tailwindcss/typography": "^0.5.20",
     "tailwindcss": "^4.3.0"
   }
